@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "username": "example_user1",
+    "name": "Example User 1",
+    "state": "active",
+    "public_email": "longcat1@example.com",
+    "web_url": "http://localhost:3000/example_user1"
+  },
+  {
+    "id": 2,
+    "username": "example_user2",
+    "name": "Example User 2",
+    "state": "active",
+    "public_email": "longcat2@example.com",
+    "web_url": "http://localhost:3000/example_user2"
+  },
+  {
+    "id": 3,
+    "username": "example_user3",
+    "name": "Example User 3",
+    "state": "active",
+    "public_email": "longcat3@example.com",
+    "web_url": "http://localhost:3000/example_user3"
+  }
+]

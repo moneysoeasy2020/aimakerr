@@ -1,0 +1,4 @@
+./memo.mysql.go
+./memo.mysql_private.go
+./mysql.go
+./mysql_private.go

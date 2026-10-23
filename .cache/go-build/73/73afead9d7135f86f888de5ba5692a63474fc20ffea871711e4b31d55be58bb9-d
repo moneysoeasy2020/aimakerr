@@ -1,0 +1,8 @@
+./ace_guid.go
+./dtyp.go
+./filetime.go
+./guid.go
+./security_descriptor.go
+./sid.go
+./system_time.go
+./unicode_string.go

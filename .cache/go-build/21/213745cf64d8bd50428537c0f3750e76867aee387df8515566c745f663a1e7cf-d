@@ -1,0 +1,5 @@
+./checksum.go
+./crc32.go
+./encryption.go
+./keyDerivation.go
+./nfold.go

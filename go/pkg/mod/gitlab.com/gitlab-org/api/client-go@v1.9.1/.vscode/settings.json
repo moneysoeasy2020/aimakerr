@@ -1,0 +1,9 @@
+{
+    "go.testEnvVars": {
+        "GITLAB_INTEGRATION_TESTS": "1",
+        "GITLAB_TOKEN": "glpat-ACCTEST1234567890123",
+        "GITLAB_BASE_URL": "http://127.0.0.1:8095/api/v4"
+    },
+    "go.testTags": "integration",
+    "go.buildTags": "integration"
+}

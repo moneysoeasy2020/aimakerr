@@ -1,0 +1,6 @@
+./ascii.go
+./charmap.go
+./charmap2.go
+./ebcdic.go
+./oem.go
+./tables.go

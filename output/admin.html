@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pSEO Affiliate Click Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans p-6">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">📊 Fiverr pSEO Click Analytics</h1>
+            <button onclick="clearData()" class="bg-red-500 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-red-600">Clear Logs</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                <p class="text-gray-500 text-sm">Total Affiliate Clicks</p>
+                <p id="total-clicks" class="text-3xl font-bold text-emerald-600">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                <p class="text-gray-500 text-sm">Top Tracked City</p>
+                <p id="top-city" class="text-xl font-bold text-gray-700">-</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                <p class="text-gray-500 text-sm">Top Tracked Niche</p>
+                <p id="top-niche" class="text-xl font-bold text-gray-700">-</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Click Activity Log</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-600 text-sm border-b">
+                            <th class="p-3">Timestamp</th>
+                            <th class="p-3">City</th>
+                            <th class="p-3">Niche Service</th>
+                            <th class="p-3">Target URL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-table-body" class="text-sm text-gray-700">
+                        <tr><td colspan="4" class="p-4 text-center text-gray-400">No clicks recorded yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadDashboard() {
+            const logs = JSON.parse(localStorage.getItem('fiverr_pseo_clicks') || '[]');
+            document.getElementById('total-clicks').innerText = logs.length;
+
+            if (logs.length === 0) return;
+
+            const cityCounts = {};
+            const nicheCounts = {};
+            logs.forEach(log => {
+                cityCounts[log.city] = (cityCounts[log.city] || 0) + 1;
+                nicheCounts[log.niche] = (nicheCounts[log.niche] || 0) + 1;
+            });
+
+            const topCity = Object.keys(cityCounts).reduce((a, b) => cityCounts[a] > cityCounts[b] ? a : b, '-');
+            const topNiche = Object.keys(nicheCounts).reduce((a, b) => nicheCounts[a] > nicheCounts[b] ? a : b, '-');
+
+            document.getElementById('top-city').innerText = topCity;
+            document.getElementById('top-niche').innerText = topNiche;
+
+            const tbody = document.getElementById('log-table-body');
+            tbody.innerHTML = '';
+            logs.reverse().forEach(log => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="p-3 text-gray-500">${log.timestamp}</td>
+                    <td class="p-3 font-medium">${log.city}, ${log.state}</td>
+                    <td class="p-3 text-emerald-600 font-semibold">${log.niche}</td>
+                    <td class="p-3 text-blue-500 truncate max-w-xs"><a href="${log.url}" target="_blank" class="underline">View Gig</a></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearData() {
+            if(confirm("Are you sure you want to clear all recorded click logs?")) {
+                localStorage.removeItem('fiverr_pseo_clicks');
+                loadDashboard();
+            }
+        }
+
+        loadDashboard();
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "total_pv": 8,
+  "unique_ips": [
+    "127.0.0.1"
+  ],
+  "languages": {
+    "ja": 3,
+    "de": 4,
+    "en": 1
+  },
+  "tools": {
+    "--kindlecraft-ai---create-books--coloring-books--puzzles---covers-with-one-ai": 3,
+    "2040": 1,
+    "2026": 2,
+    "2027": 2
+  },
+  "fiverr_clicks": 1,
+  "logs": [
+    {
+      "time": "2026-10-21 11:37:31",
+      "path": "/pages/--kindlecraft-ai---create-books--coloring-books--puzzles---covers-with-one-ai-de.html",
+      "ip": "127.0.0.1"
+    },
+    {
+      "time": "2026-10-21 11:37:20",
+      "path": "/pages/2027-de.html",
+      "ip": "127.0.0.1"
+    },
+    {
+      "time": "2026-10-21 11:37:07",
+      "path": "/pages/2026-ja.html",
+      "ip": "127.0.0.1"
+    },
+    {
+      "time": "2026-10-21 11:36:36",
+      "path": "/pages/--kindlecraft-ai---create-books--coloring-books--puzzles---covers-with-one-ai-en.html",
+      "ip": "127.0.0.1"
+    },
+    {
+      "time": "2026-10-21 11:34:21",
+      "path": "/pages/2027-ja.html",
+      "ip": "127.0.0.1"
+    },
+    {
+      "time": "2026-10-21 11:34:05",
+      "path": "/pages/2026-de.html",
+      "ip": "127.0.0.1"
+    },
+    {
+      "time": "2026-10-21 11:33:35",
+      "path": "/pages/2040-de.html",
+      "ip": "127.0.0.1"
+    },
+    {
+      "time": "2026-10-21 11:32:50",
+      "path": "/pages/--kindlecraft-ai---create-books--coloring-books--puzzles---covers-with-one-ai-ja.html",
+      "ip": "127.0.0.1"
+    }
+  ]
+}

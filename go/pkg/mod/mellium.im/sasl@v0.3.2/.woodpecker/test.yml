@@ -1,0 +1,29 @@
+steps:
+  info: &info
+    image: golang:${GO_VERSION}-alpine
+    environment:
+      CGO_ENABLED: "0"
+    commands:
+      - go version
+      - go env
+    when:
+      - event: [tag, push, pull_request, release, manual]
+  test:
+    << : *info
+    commands: go test -v -cover ./...
+  integration:
+    << : *info
+    environment:
+      CGO_ENABLED: "1"
+    commands:
+      - apk update
+      - apk add build-base libgsasl-dev
+      - go test -v -tags "integration" -run Integration ./...
+
+matrix:
+  GO_VERSION:
+    - 1.22
+    - 1.23
+
+depends_on:
+  - dco

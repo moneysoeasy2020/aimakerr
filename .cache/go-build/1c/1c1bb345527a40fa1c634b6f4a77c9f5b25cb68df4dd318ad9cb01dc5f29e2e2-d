@@ -1,0 +1,4 @@
+./annotations.go
+./doc.go
+./validate.go
+./yamlmeta.go

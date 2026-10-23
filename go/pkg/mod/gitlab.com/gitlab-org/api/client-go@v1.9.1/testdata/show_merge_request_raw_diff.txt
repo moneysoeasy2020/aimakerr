@@ -1,0 +1,15 @@
+diff --git a/also_testing b/also_testing
+index d4d510b..2a2c3b1 100644
+--- a/also_testing
++++ b/also_testing
+@@ -1,3 +1,2 @@
+ aaaaaaaaaaaaaaaa
+-bbbbbbbbbbbbbbbb
+ cccccccccccccccc
+diff --git a/testing b/testing
+index c7c7da3..ce2cd85 100644
+--- a/testing
++++ b/testing
+@@ -1 +1,2 @@
+ hello there
++i'm a test :)

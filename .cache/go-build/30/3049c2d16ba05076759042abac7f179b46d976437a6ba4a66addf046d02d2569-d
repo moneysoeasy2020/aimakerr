@@ -1,0 +1,5 @@
+./dotnetgadget.go
+./formatters.go
+./general_types.go
+./records.go
+./viewstate.go

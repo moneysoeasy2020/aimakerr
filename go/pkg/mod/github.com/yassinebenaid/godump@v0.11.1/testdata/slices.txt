@@ -1,0 +1,60 @@
+godump_test.Slice:13:24 {
+   1,
+   2.3,
+   true,
+   false,
+   nil,
+   []*string:3:3 {
+      &"foo",
+      &"bar",
+      &"baz",
+   },
+   []interface {}:0:0 {},
+   &[]bool:2:2 {#1
+      true,
+      false,
+   },
+   []interface {}:3:8 {
+      nil,
+      nil,
+      nil,
+   },
+   []godump_test.Slice(nil),
+   [2]int {
+      1,
+      2,
+   },
+   [2]interface {} {
+      nil,
+      nil,
+   },
+   &godump_test.Slice:13:24 {#2
+      1,
+      2.3,
+      true,
+      false,
+      nil,
+      []*string:3:3 {
+         &"foo",
+         &"bar",
+         &"baz",
+      },
+      []interface {}:0:0 {},
+      &@1,
+      []interface {}:3:8 {
+         nil,
+         nil,
+         nil,
+      },
+      []godump_test.Slice(nil),
+      [2]int {
+         1,
+         2,
+      },
+      [2]interface {} {
+         nil,
+         nil,
+      },
+      &@2,
+   },
+}

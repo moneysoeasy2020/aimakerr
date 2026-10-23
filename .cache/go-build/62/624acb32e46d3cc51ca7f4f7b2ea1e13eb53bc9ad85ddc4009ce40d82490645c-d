@@ -1,0 +1,9 @@
+./annotations.go
+./assign.go
+./check.go
+./doc.go
+./error.go
+./openapi.go
+./schema.go
+./type.go
+./yamlmeta.go

@@ -1,0 +1,34 @@
+name: Go
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version:
+          - oldstable
+          - stable
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Install Dependencies
+        run: go get .
+      - name: Build
+        run: go build -v ./...
+      - name: Test amd64
+        run: go test -v ./...
+        env:
+          GOARCH: amd64
+      - name: Test 386
+        run: go test -v ./...
+        env:
+          GOARCH: 386

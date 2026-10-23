@@ -1,0 +1,4 @@
+./flags.go
+./jsbeautifier.go
+./output.go
+./outputline.go

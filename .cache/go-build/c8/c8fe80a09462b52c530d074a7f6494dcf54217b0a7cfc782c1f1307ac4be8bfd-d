@@ -1,0 +1,6 @@
+./authentifier.go
+./config.go
+./credentials.go
+./gssapi.go
+./netlogon.go
+./secure_credential.go

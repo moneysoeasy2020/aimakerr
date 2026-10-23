@@ -1,0 +1,11 @@
+./activation.go
+./context.go
+./dispatch.go
+./excel.go
+./htafile.go
+./mmc.go
+./module.go
+./shellbrowserwindow.go
+./shellwindows.go
+./util.go
+./visualstudio.go

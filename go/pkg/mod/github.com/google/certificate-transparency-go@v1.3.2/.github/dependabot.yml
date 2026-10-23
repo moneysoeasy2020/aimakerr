@@ -1,0 +1,36 @@
+version: 2
+updates:
+- package-ecosystem: gomod
+  directory: /
+  schedule:
+    interval: monthly
+  groups:
+    all-deps:
+      applies-to: version-updates
+      patterns:
+        - "*"
+
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: monthly
+  groups:
+    all-deps:
+      applies-to: version-updates
+      patterns:
+        - "*"
+
+- package-ecosystem: docker
+  directories:
+    - /integration
+    - /internal/witness/cmd/feeder
+    - /internal/witness/cmd/witness
+    - /trillian/examples/deployment/docker/ctfe
+    - /trillian/examples/deployment/docker/envsubst
+  schedule:
+    interval: monthly
+  groups:
+    docker-deps:
+      applies-to: version-updates
+      patterns:
+        - "*"

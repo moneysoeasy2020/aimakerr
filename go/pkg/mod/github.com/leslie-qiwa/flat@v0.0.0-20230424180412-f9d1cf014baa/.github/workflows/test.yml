@@ -1,0 +1,30 @@
+name: build
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go: [1.18, 1.19]
+
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{matrix.go}}
+
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Lint
+      run: |
+        ls -al
+        make lint-pkgs
+        make lint
+
+    - name: Test
+      run: |
+        make test

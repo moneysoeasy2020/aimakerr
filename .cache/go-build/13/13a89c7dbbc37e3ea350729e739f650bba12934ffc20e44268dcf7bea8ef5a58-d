@@ -1,0 +1,4 @@
+./doc.go
+./graphql.go
+./query.go
+./scalar.go

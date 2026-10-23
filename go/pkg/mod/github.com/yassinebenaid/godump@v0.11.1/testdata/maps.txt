@@ -1,0 +1,17 @@
+[]interface {}:5:5 {
+   map[string]string:0 {},
+   map[interface {}]int:1 {
+      &map[interface {}]interface {}:1 {#1
+         12: 34,
+      }: 123,
+   },
+   map[string]interface {}:1 {
+      "cyclic": &@1,
+   },
+   godump_test.SomeMap:1 {
+      &godump_test.SomeMap:0 {#2}: &godump_test.SomeMap:1 {#3
+         &godump_test.SomeMap:0 {#4}: &@4,
+      },
+   },
+   godump_test.SomeMap(nil),
+}

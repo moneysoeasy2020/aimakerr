@@ -1,0 +1,3 @@
+./dcerpc.go
+./transport_init.go
+./wmiexec.go

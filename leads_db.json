@@ -1,0 +1,972 @@
+{
+    "meta": {
+        "last_sent_date": "2026-10-23",
+        "today_sent_count": 0,
+        "keyword_index": 2
+    },
+    "leads": {
+        "marketing@www.microsoft.com": {
+            "store_name": "Microsoft Copilot",
+            "lead_type": "D2C_STORE",
+            "niche": "AI Automation",
+            "url": "www.microsoft.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-18 23:13:12",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Copilot AI: Generative Visibility Boost"
+                }
+            ],
+            "created_at": "2026-10-18 23:12:20"
+        },
+        "marketing@www.salesforce.com": {
+            "store_name": "Salesforce",
+            "lead_type": "D2C_STORE",
+            "niche": "AI Automation",
+            "url": "www.salesforce.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-18 23:14:07",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI Recommendations for Salesforce"
+                }
+            ],
+            "created_at": "2026-10-18 23:12:34"
+        },
+        "marketing@www.make.com": {
+            "store_name": "Make",
+            "lead_type": "D2C_STORE",
+            "niche": "AI Automation",
+            "url": "www.make.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-18 23:14:53",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Make: AI Recommendation Boost"
+                }
+            ],
+            "created_at": "2026-10-18 23:12:51"
+        },
+        "marketing@shop-style-your-senses.myshopify.com": {
+            "store_name": "Style Your Senses",
+            "lead_type": "D2C_STORE",
+            "niche": "Lifestyle Retail",
+            "url": "shop-style-your-senses.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-18 23:31:25",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Get AI Recommended: Style Your Senses"
+                }
+            ],
+            "created_at": "2026-10-18 23:30:39"
+        },
+        "hello@bluemagnoliaclothingco.com": {
+            "store_name": "Blue Magnolia Clothing Co.",
+            "lead_type": "D2C_STORE",
+            "niche": "Women's Clothing Boutique",
+            "url": "blue-magnolia-shop.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-18 23:32:21",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Blue Magnolia: AI Search Advantage"
+                }
+            ],
+            "created_at": "2026-10-18 23:30:56"
+        },
+        "marketing@favoritesister.myshopify.com": {
+            "store_name": "Favorite Sister",
+            "lead_type": "D2C_STORE",
+            "niche": "Women's Clothing Boutique",
+            "url": "favoritesister.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-18 23:33:06",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Boost Favorite Sister's AI Visibility"
+                }
+            ],
+            "created_at": "2026-10-18 23:31:07"
+        },
+        "marketing@the-mayfair-hall.myshopify.com": {
+            "store_name": "The Mayfair Hall",
+            "lead_type": "D2C_STORE",
+            "niche": "Home Decor",
+            "url": "the-mayfair-hall.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-18 23:39:32",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI recommending The Mayfair Hall?"
+                }
+            ],
+            "created_at": "2026-10-18 23:39:16"
+        },
+        "support@birdseyeblue.com": {
+            "store_name": "Birds Eye Blue",
+            "lead_type": "D2C_STORE",
+            "niche": "Electronics and Gadgets",
+            "url": "birds-eye-blue.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 00:40:33",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI recommendations for Birds Eye Blue?"
+                }
+            ],
+            "created_at": "2026-10-19 00:40:17"
+        },
+        "marketing@pubmed.ncbi.nlm.nih.gov": {
+            "store_name": "PubMed",
+            "lead_type": "D2C_STORE",
+            "niche": "Biomedical Literature",
+            "url": "pubmed.ncbi.nlm.nih.gov",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 01:42:46",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT Recommending PubMed Yet?"
+                }
+            ],
+            "created_at": "2026-10-19 01:41:32"
+        },
+        "hr@pubmed.ncbi.nlm.nih.gov": {
+            "store_name": "PubMed",
+            "lead_type": "HR_HIRING",
+            "niche": "Biomedical Research",
+            "url": "pubmed.ncbi.nlm.nih.gov",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 01:44:19",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding PubMed"
+                }
+            ],
+            "created_at": "2026-10-19 01:41:50"
+        },
+        "marketing@magazine.hms.harvard.edu": {
+            "store_name": "Harvard Medicine Magazine",
+            "lead_type": "D2C_STORE",
+            "niche": "Food Supplements",
+            "url": "magazine.hms.harvard.edu",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 01:45:04",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Is AI recommending Harvard Medicine?"
+                }
+            ],
+            "created_at": "2026-10-19 01:42:04"
+        },
+        "marketing@750892-3.myshopify.com": {
+            "store_name": "Tea Blending Parties",
+            "lead_type": "D2C_STORE",
+            "niche": "Tea & Wellness",
+            "url": "750892-3.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 03:47:28",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Tea Blending Parties"
+                }
+            ],
+            "created_at": "2026-10-19 03:46:01"
+        },
+        "support@better5.com": {
+            "store_name": "Better5",
+            "lead_type": "D2C_STORE",
+            "niche": "E-commerce",
+            "url": "setthehookonline.myshopify.com",
+            "status": "REPLIED",
+            "history": [
+                {
+                    "time": "2026-10-19 03:48:33",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Is ChatGPT recommending Better5 yet?"
+                },
+                {
+                    "time": "2026-10-19 03:50:46",
+                    "action": "AI_FOLLOWUP_SENT",
+                    "client_msg": "Hello Alex,  Thanks for reaching out! This is an automated message to let you know we have received your email and a support ticket has been created.  A member of our support team will respond to your email within 2-3 business days or sooner.   Our inbox is handled in the order emails are received. Sending multiple emails about the same request may reset your place in the queue and delay our response.  To log into your account visit: https://my.better5.com/login No password is required to log in!  View our 'How To Log Into Your Better5 Account' video on YouTube: https://www.youtube.com/watch?v=A2e60i6_zR0  Experiencing a tech issue? View our 'How-To Videos' playlist on YouTube: https://www.youtube.com/watch?v=4TUhae_RjT4&list=PLGpGSBkWYDhMbE4BAe15uhwG1mR9CBu92  Thank you for your patience and talk soon! Better5 Support Team",
+                    "ai_reply": "Hi,\n\nThanks for replying! You can check top-rated AI GEO & automation developers directly here: https://www.fiverr.com/search/gigs?query=ai+automation+shopify+geo&af=510726\n\nBest,\nAlex"
+                }
+            ],
+            "created_at": "2026-10-19 03:46:15"
+        },
+        "hello@purervita.com": {
+            "store_name": "BePurer",
+            "lead_type": "D2C_STORE",
+            "niche": "Women's Health Supplements",
+            "url": "bepurer.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 03:49:09",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Is ChatGPT recommending BePurer yet?"
+                }
+            ],
+            "created_at": "2026-10-19 03:46:25"
+        },
+        "hr@jobs.lever.co": {
+            "store_name": "Pattern",
+            "lead_type": "HR_HIRING",
+            "niche": "Social Commerce",
+            "url": "jobs.lever.co",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 07:52:35",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Accelerate Pattern's AI initiatives"
+                }
+            ],
+            "created_at": "2026-10-19 07:52:19"
+        },
+        "support@themetidy.com": {
+            "store_name": "Sports Fashion Theme",
+            "lead_type": "D2C_STORE",
+            "niche": "Fashion/Apparel",
+            "url": "sports-fashion-theme.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 08:59:47",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Sports Fashion Theme"
+                }
+            ],
+            "created_at": "2026-10-19 08:55:14"
+        },
+        "marketing@marsthelabel.myshopify.com": {
+            "store_name": "marsthelabel",
+            "lead_type": "D2C_STORE",
+            "niche": "Women's Apparel",
+            "url": "marsthelabel.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 09:01:17",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding marsthelabel"
+                }
+            ],
+            "created_at": "2026-10-19 08:58:46"
+        },
+        "info@homeoutletdirect.com": {
+            "store_name": "Home Outlet Direct",
+            "lead_type": "D2C_STORE",
+            "niche": "Home Goods",
+            "url": "signaturefarmhouse.myshopify.com",
+            "status": "REPLIED",
+            "history": [
+                {
+                    "time": "2026-10-19 11:06:28",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Home Outlet Direct"
+                },
+                {
+                    "time": "2026-10-19 11:09:34",
+                    "action": "AI_FOLLOWUP_SENT",
+                    "client_msg": "Hi Alex,\r\n\r\nThank you for reaching Home Outlet Direct. \r\n\r\nOur office is currently closed. One of our customer support representatives will get back to you during our regular business hours. \r\n\r\nWe are open Monday-Friday 9:00-9:00 EST. \r\n\r\nBest regards,\r\nCustomer Support Team | Home Outlet Direct\r\nOn Mon, Oct 19 2026, at 03:06 AM, Alex <wvbiz2013@gmail.com> <wvbiz2013@gmail.com> wrote:\r\n\r\n> Hi team at Home Outlet Direct,\r\n> \r\n> Noticed your presence in Home Goods. We help brands optimize for AI search recommendations (ChatGPT, Perplexity) and automate workflows.\r\n> \r\n> Open to a quick overview?",
+                    "ai_reply": "Hi,\n\nThanks for replying! You can check top-rated AI GEO & automation developers directly here: https://www.fiverr.com/search/gigs?query=ai+automation+shopify+geo&af=510726\n\nBest,\nAlex"
+                }
+            ],
+            "created_at": "2026-10-19 11:02:34"
+        },
+        "marketing@b0bbcd-a1.myshopify.com": {
+            "store_name": "SMEG Philippines",
+            "lead_type": "D2C_STORE",
+            "niche": "Home Appliances",
+            "url": "b0bbcd-a1.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 11:07:53",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding SMEG Philippines"
+                }
+            ],
+            "created_at": "2026-10-19 11:03:15"
+        },
+        "marketing@sportite-store-demo.myshopify.com": {
+            "store_name": "Sportite",
+            "lead_type": "D2C_STORE",
+            "niche": "Sports Wear",
+            "url": "sportite-store-demo.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 13:11:48",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Sportite"
+                }
+            ],
+            "created_at": "2026-10-19 13:09:56"
+        },
+        "info@rippleyogawear.com": {
+            "store_name": "Ripple Collection",
+            "lead_type": "D2C_STORE",
+            "niche": "Yoga Apparel",
+            "url": "ripplecollection.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 13:13:18",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Ripple Collection"
+                }
+            ],
+            "created_at": "2026-10-19 13:10:22"
+        },
+        "marketing@i-wear-khadi.myshopify.com": {
+            "store_name": "Charkha Tales",
+            "lead_type": "D2C_STORE",
+            "niche": "Yoga Wear / Activewear",
+            "url": "i-wear-khadi.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 13:14:01",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Is ChatGPT recommending Charkha Tales?"
+                }
+            ],
+            "created_at": "2026-10-19 13:10:44"
+        },
+        "marketing@smart-picks-9527.myshopify.com": {
+            "store_name": "Smart Picks",
+            "lead_type": "D2C_STORE",
+            "niche": "Women's Fashion",
+            "url": "smart-picks-9527.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 16:28:25",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Smart Picks"
+                }
+            ],
+            "created_at": "2026-10-19 16:27:22"
+        },
+        "marketing@newcarlsonlabs.myshopify.com": {
+            "store_name": "Carlson Labs",
+            "lead_type": "D2C_STORE",
+            "niche": "Health & Wellness",
+            "url": "newcarlsonlabs.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 20:44:31",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT recommending Carlson Labs yet?"
+                }
+            ],
+            "created_at": "2026-10-19 20:40:55"
+        },
+        "marketing@ecq1dz-8t.myshopify.com": {
+            "store_name": "Midi",
+            "lead_type": "D2C_STORE",
+            "niche": "Health Supplements",
+            "url": "ecq1dz-8t.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 20:46:05",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Midi"
+                }
+            ],
+            "created_at": "2026-10-19 20:42:32"
+        },
+        "sales@stablefeed.com": {
+            "store_name": "StableFeed",
+            "lead_type": "D2C_STORE",
+            "niche": "Health & Nutrition",
+            "url": "stable-feed-com.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 20:47:34",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding StableFeed"
+                }
+            ],
+            "created_at": "2026-10-19 20:43:50"
+        },
+        "marketing@nwcaonline.com": {
+            "store_name": "National Wrestling Coaches Association",
+            "lead_type": "D2C_STORE",
+            "niche": "Sports (Wrestling)",
+            "url": "nwcaonline.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 22:49:55",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT recommending NWCA yet?"
+                }
+            ],
+            "created_at": "2026-10-19 22:49:09"
+        },
+        "info@solarroast.com": {
+            "store_name": "Solar Roast Coffee",
+            "lead_type": "D2C_STORE",
+            "niche": "Coffee",
+            "url": "solarroast.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-19 22:50:54",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT & Solar Roast Coffee?"
+                }
+            ],
+            "created_at": "2026-10-19 22:49:38"
+        },
+        "hr@www.linkedin.com": {
+            "store_name": "LinkedIn",
+            "lead_type": "HR_HIRING",
+            "niche": "Ecommerce",
+            "url": "www.linkedin.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 00:58:20",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding LinkedIn"
+                }
+            ],
+            "created_at": "2026-10-20 00:53:30"
+        },
+        "sales@ilgufo.it": {
+            "store_name": "Il Gufo",
+            "lead_type": "D2C_STORE",
+            "niche": "Children's and Babies' Clothing",
+            "url": "www.ilgufo.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 04:08:27",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Il Gufo"
+                }
+            ],
+            "created_at": "2026-10-20 04:04:56"
+        },
+        "marketing@www.cotelac.us": {
+            "store_name": "Cotélac",
+            "lead_type": "D2C_STORE",
+            "niche": "Fashion",
+            "url": "www.cotelac.us",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 04:09:58",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Cotélac"
+                }
+            ],
+            "created_at": "2026-10-20 04:05:08"
+        },
+        "marketing@community.postman.com": {
+            "store_name": "Postman",
+            "lead_type": null,
+            "niche": "API Development Tools",
+            "url": "community.postman.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 04:11:28",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Postman"
+                }
+            ],
+            "created_at": "2026-10-20 04:07:24"
+        },
+        "marketing@danielkraftmann.myshopify.com": {
+            "store_name": "Daniel Kraftmann",
+            "lead_type": "D2C_STORE",
+            "niche": "Ice Makers",
+            "url": "danielkraftmann.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 06:15:28",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Daniel Kraftmann"
+                }
+            ],
+            "created_at": "2026-10-20 06:13:22"
+        },
+        "marketing@mybeautystat.myshopify.com": {
+            "store_name": "BeautyStat",
+            "lead_type": "D2C_STORE",
+            "niche": "Beauty/Skincare",
+            "url": "mybeautystat.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 07:27:11",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding BeautyStat"
+                }
+            ],
+            "created_at": "2026-10-20 07:24:08"
+        },
+        "marketing@www.dupont.com": {
+            "store_name": "DuPont Tyvek",
+            "lead_type": "D2C_STORE",
+            "niche": "Building Envelope Systems",
+            "url": "www.dupont.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 09:33:56",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding DuPont Tyvek"
+                }
+            ],
+            "created_at": "2026-10-20 09:31:36"
+        },
+        "marketing@alnoor-brand.myshopify.com": {
+            "store_name": "AL NOOR",
+            "lead_type": "D2C_STORE",
+            "niche": "Online Retailer",
+            "url": "alnoor-brand.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 11:36:47",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AL NOOR & AI recommendations?"
+                }
+            ],
+            "created_at": "2026-10-20 11:35:32"
+        },
+        "marketing@velmoraofficial2.myshopify.com": {
+            "store_name": "Velmora Official",
+            "lead_type": "D2C_STORE",
+            "niche": "Online Retail",
+            "url": "velmoraofficial2.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 11:38:16",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Velmora Official"
+                }
+            ],
+            "created_at": "2026-10-20 11:35:55"
+        },
+        "marketing@mavon-demo.myshopify.com": {
+            "store_name": "Mavon",
+            "lead_type": "D2C_STORE",
+            "niche": "Fashion",
+            "url": "mavon-demo.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 11:39:45",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Mavon"
+                }
+            ],
+            "created_at": "2026-10-20 11:36:05"
+        },
+        "marketing@8b30f3-2.myshopify.com": {
+            "store_name": "oneskin",
+            "lead_type": "D2C_STORE",
+            "niche": "Skincare",
+            "url": "8b30f3-2.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 12:50:11",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding oneskin"
+                }
+            ],
+            "created_at": "2026-10-20 12:45:12"
+        },
+        "marketing@meetsponsors.com": {
+            "store_name": "KitchenAid",
+            "lead_type": "D2C_STORE",
+            "niche": "Kitchen Appliances",
+            "url": "meetsponsors.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 14:55:27",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding KitchenAid"
+                }
+            ],
+            "created_at": "2026-10-20 14:53:06"
+        },
+        "marketing@keto-lifestyle-diet.myshopify.com": {
+            "store_name": "Keto Lifestyle Diet",
+            "lead_type": "D2C_STORE",
+            "niche": "Keto Diet / Wellness",
+            "url": "keto-lifestyle-diet.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 17:58:48",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT recommending Keto Lifestyle Diet?"
+                }
+            ],
+            "created_at": "2026-10-20 17:58:10"
+        },
+        "info@caninekitchen.com": {
+            "store_name": "Canine Kitchen",
+            "lead_type": "D2C_STORE",
+            "niche": "Pet Food",
+            "url": "sc22z9-0f.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 17:59:25",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT recommending Canine Kitchen?"
+                }
+            ],
+            "created_at": "2026-10-20 17:58:20"
+        },
+        "marketing@salerno-vitamins.myshopify.com": {
+            "store_name": "Salerno Vitamins",
+            "lead_type": "D2C_STORE",
+            "niche": "Multivitamin Supplements",
+            "url": "salerno-vitamins.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 18:00:07",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI Recommendations for Salerno Vitamins?"
+                }
+            ],
+            "created_at": "2026-10-20 17:58:34"
+        },
+        "marketing@kadence.co": {
+            "store_name": "Kadence",
+            "lead_type": "D2C_STORE",
+            "niche": "E-commerce",
+            "url": "kadence.co",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 19:02:29",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Kadence"
+                }
+            ],
+            "created_at": "2026-10-20 19:01:43"
+        },
+        "hr@work.turing.com": {
+            "store_name": "Turing",
+            "lead_type": "HR_HIRING",
+            "niche": "AI/Tech Staffing",
+            "url": "work.turing.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 19:03:05",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Accelerate Your AI Projects"
+                }
+            ],
+            "created_at": "2026-10-20 19:02:16"
+        },
+        "marketing@clothing-responsive-theme.myshopify.com": {
+            "store_name": "Clothing",
+            "lead_type": "D2C_STORE",
+            "niche": "Clothing",
+            "url": "clothing-responsive-theme.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 23:13:06",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Clothing"
+                }
+            ],
+            "created_at": "2026-10-20 23:09:38"
+        },
+        "info@infinitedefinite.com": {
+            "store_name": "Infinite Definite",
+            "lead_type": "D2C_STORE",
+            "niche": "Fashion/Boutique",
+            "url": "infinite-definite-boutique.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 23:13:49",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Is ChatGPT recommending Infinite Definite yet?"
+                }
+            ],
+            "created_at": "2026-10-20 23:11:00"
+        },
+        "marketing@theequestrianlifestyle.myshopify.com": {
+            "store_name": "The Equestrian Lifestyle",
+            "lead_type": "D2C_STORE",
+            "niche": "Equestrian Apparel",
+            "url": "theequestrianlifestyle.myshopify.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-20 23:15:10",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding The Equestrian Lifestyle"
+                }
+            ],
+            "created_at": "2026-10-20 23:12:06"
+        },
+        "atlas@autopilotbusiness.ai": {
+            "store_name": "Autopilot Business",
+            "lead_type": "D2C_STORE",
+            "niche": "Fashion Retail Technology",
+            "url": "autopilotbusiness.ai",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 04:40:43",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Autopilot Business"
+                }
+            ],
+            "created_at": "2026-10-21 04:39:40"
+        },
+        "marketing@www.panoramata.co": {
+            "store_name": "Panoramata",
+            "lead_type": "D2C_STORE",
+            "niche": "Fitness Ecommerce Advertising",
+            "url": "www.panoramata.co",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 08:53:34",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI Recommendations for Panoramata"
+                }
+            ],
+            "created_at": "2026-10-21 08:51:43"
+        },
+        "sales@vaikobi.com": {
+            "store_name": "Vaikobi",
+            "lead_type": "D2C_STORE",
+            "niche": "Apparel",
+            "url": "www.vaikobi.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 11:00:26",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Vaikobi"
+                }
+            ],
+            "created_at": "2026-10-21 10:56:37"
+        },
+        "marketing@www.universalstandard.com": {
+            "store_name": "Universal Standard",
+            "lead_type": "D2C_STORE",
+            "niche": "Fashion/Apparel",
+            "url": "www.universalstandard.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 11:01:52",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Universal Standard"
+                }
+            ],
+            "created_at": "2026-10-21 10:57:56"
+        },
+        "hello@gymforce.in": {
+            "store_name": "GymForce",
+            "lead_type": "D2C_STORE",
+            "niche": "Gym Management Software",
+            "url": "gymforce.in",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 11:59:08",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding GymForce"
+                }
+            ],
+            "created_at": "2026-10-21 11:56:03"
+        },
+        "marketing@hipandhealthy.com": {
+            "store_name": "Hip & Healthy",
+            "lead_type": "D2C_STORE",
+            "niche": "Wellness Boxes",
+            "url": "hipandhealthy.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 15:25:03",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT & Hip & Healthy."
+                }
+            ],
+            "created_at": "2026-10-21 15:24:16"
+        },
+        "marketing@www.instagram.com": {
+            "store_name": "Unknown",
+            "lead_type": "D2C_STORE",
+            "niche": "Unknown",
+            "url": "www.instagram.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 15:25:54",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT recommending your brand?"
+                }
+            ],
+            "created_at": "2026-10-21 15:24:40"
+        },
+        "marketing@www.mysubscriptionaddiction.com": {
+            "store_name": "My Subscription Addiction",
+            "lead_type": "D2C_STORE",
+            "niche": "Subscription Boxes",
+            "url": "www.mysubscriptionaddiction.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 15:26:36",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT recommending My Subscription Addiction?"
+                }
+            ],
+            "created_at": "2026-10-21 15:24:49"
+        },
+        "customerservice@freeshipping.com": {
+            "store_name": "FreeShipping.com",
+            "lead_type": "D2C_STORE",
+            "niche": "E-commerce Membership",
+            "url": "freeshipping.com",
+            "status": "REPLIED",
+            "history": [
+                {
+                    "time": "2026-10-21 16:04:55",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI Recommendations for FreeShipping.com?"
+                },
+                {
+                    "time": "2026-10-21 16:06:55",
+                    "action": "AI_FOLLOWUP_SENT",
+                    "client_msg": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <title>FreeShipping.com</title> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> <link href=\"https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i\" rel=\"stylesheet\" /> <style type=\"text/css\"> * { margin-top: 0px; margin-bottom: 0px; border: none; line-height: normal; outline: none; list-style: none; -webkit-text-size-adjust: none; -ms-text-size-adjust: none; } .gmailfix { display: none; display: none !important; } table { padding: 0px !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; } body { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; width: 100% !important; -webkit-text-size-adjust: 100% !important; -ms-text-size-adjust: 100% !important; -webkit-font-smoothing: antialiased !important; } img { border: 0 !important; outline: none !important; display: block !important; } table { mso-table-lspace: 0px; mso-table-rspace: 0px; } td { mso-line-height-rule: exactly; } a, span { mso-line-height-rule: exactly; } a:link { text-decoration: none; } /* unvisited link */ a:visited { text-decoration: none; } /* visited link */ .ExternalClass * { line-height: 100%; } .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass a, .ExternalClass div { line-height: 100%; } .f_num a { color: #ffffff; text-decoration: none; } .call_txt a { text-decoration: none; color: #464646; } table .main_table { width: 600px; } [style*=\"Roboto\"] { font-family: \"Roboto\", Arial, sans-serif !important; } /* mobile version*/ @media only screen and (max-width: 480px) { table[class=\"wrapper\"] { width: 100% !important; height: inherit !important; } table[class=\"main_table\"] { width: 320px !important; } td[class=\"txt_center\"] { text-align: center !important; } img[class=\"main_image\"] { width: 100% !important; height: inherit !important; } } </style> </head> <body marginwidth=\"0\" marginheight=\"0\" style=\"background-color: #ffffff;\" align=\"center\"> <div class=\"gmailfix\" style=\"white-space: nowrap; white-space: nowrap; font: 15px courier; line-height: 0;\"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div> <table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#FFFFFF\" style=\"margin: 0 auto;\"> <tr> <td> <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin: 0 auto; background-color: #0082b6;\" class=\"wrapper\" align=\"center\"> <tr> <td width=\"75%\"> <a style=\"font-family: Arial, sans-serif; color: #fff; font-size: 16px; text-decoration: none;\" href=\"https://www.freeshipping.com/signin\"> <img alt=\"FreeShipping.com\" src=\"https://cd64eccd4d9bb0000dc5-6f8451e3b66fae07646733d421889de0.ssl.cf2.rackcdn.com/fs-logo_1117.jpg\" border=\"0\" /> </a> </td> <td width=\"25%\" align=\"right\" style=\"text-align: right; padding-right: 20px; font-family: 'Roboto', Arial, sans-serif;\"> <a style=\"color: #ffffff; font-size: 16px; text-decoration: none;\" href=\"https://www.freeshipping.com/signin\">Sign In</a> </td> </tr> </table> </td> </tr> <tr> <td> <table width=\"565\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin: 0 auto;\" class=\"wrapper\" align=\"center\"> <tr> <td style=\"text-align: left; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #2f2f2f; letter-spacing: 1px; padding: 30px 10px 10px 10px;\">Hi Alex,</td> </tr> <tr> <td style=\"text-align: left; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #2f2f2f; line-height: 22px; letter-spacing: 1px; padding: 0px 10px 10px 10px;\">We received your message and will get back to you within 24 hours (but usually sooner)!</td> </tr> <tr> <td style=\"text-align: left; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #2f2f2f; line-height: 22px; letter-spacing: 1px; padding: 0px 10px 10px 10px;\"> In the meantime, these links may be helpful: </td> </tr> <tr> <td style=\"text-align: left; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #2f2f2f; line-height: 22px; letter-spacing: 1px; padding: 0px 10px 10px 10px;\"> <a style=\"color: #0082b6; font-weight: bold;\" href=\"https://www.freeshipping.com/faq/what-is-freeshipping-com\">What is FreeShipping.com?</a> </td> </tr> <tr> <td style=\"text-align: left; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #2f2f2f; line-height: 22px; letter-spacing: 1px; padding: 0px 10px 10px 10px;\"> <a style=\"color: #0082b6; font-weight: bold;\" href=\"https://www.freeshipping.com/how-it-works\">How Does the Membership Work?</a> </td> </tr> <tr> <td style=\"text-align: left; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #2f2f2f; line-height: 22px; letter-spacing: 1px; padding: 0px 10px 5px 10px;\">Have a great day,</td> </tr> <tr> <td style=\"text-align: left; font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: #2f2f2f; line-height: 22px; letter-spacing: 1px; padding: 0px 10px 30px 10px;\">The FreeShipping Team</td> </tr> </table> </td> </tr> <tr> <td align=\"center\"> <table width=\"600\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin: 0 auto;\" class=\"wrapper\"> <tr> <td style=\"padding: 30px 0px 20px 0px;\"> <table align=\"center\" width=\"260\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin: 0 auto;\"> <tr> <td width=\"20\" align=\"center\"><img src=\"http://i.em.shopsmarter.com/wpm/1040/Images/PhoneIcon_2x.png\" alt=\"\" width=\"17\" height=\"17\" /></td> <td width=\"240\" style=\"text-align: center; font-family: Arial, 'Roboto', sans-serif; color: #2f2f2f; font-size: 12px;\"> Questions? Call us at <a href=\"tel:8008695597\" style=\"color: #2f2f2f; font-weight: bold;\">800-869-5597</a> </td> </tr> </table> </td> </tr> <tr> <td align=\"center\" style=\"padding: 0px 10px 20px 10px;\"> <table width=\"310\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin: 0 auto;\"> <tr> <td width=\"65\" style=\"text-align: center; font-family: Arial, 'Roboto', sans-serif; font-size: 12px; font-weight: bold; border-right: 2px solid #094160;\"> <a href=\"https://www.freeshipping.com/privacy-policy \" style=\"color: #2f2f2f;\">Privacy Policy</a> </td> <td width=\"105\" style=\"text-align: center; font-family: Arial, 'Roboto', sans-serif; font-size: 12px; font-weight: bold; border-right: 2px solid #094160;\"> <a href=\"https://www.freeshipping.com/account\" style=\"color: #2f2f2f;\">Update Profile</a> </td> <td width=\"85\" style=\"text-align: center; font-family: Arial, 'Roboto', sans-serif; font-size: 12px; font-weight: bold; border-right: 2px solid #094160;\"> <a href=\"https://www.freeshipping.com/customerservice/contact\" style=\"color: #2f2f2f;\">Contact Us</a> </td> <td width=\"55\" style=\"text-align: center; font-family: Arial, 'Roboto', sans-serif; font-size: 12px; font-weight: bold;\"> <a href=\"https://www.freeshipping.com/about/faq\" style=\"color: #2f2f2f;\">FAQ</a> </td> </tr> </table> </td> </tr> <tr> <td style=\"text-align: center; font-family: Arial, 'Roboto', sans-serif; font-size: 12px; color: #2f2f2f; padding-bottom: 5px;\">FreeShipping.com P.O. Box 303 Rocky Hill, CT 06067-9998</td> </tr> <tr> <td style=\"text-align: center; font-family: Arial, 'Roboto', sans-serif; font-size: 12px; color: #2f2f2f; padding-bottom: 50px;\">Copyright &copy; Clarus Direct. All rights reserved.</td> </tr> </table> </td> </tr> </table> </body></html>\r\n\r\n--------------------------------\r\nThis email is a service from FreeShipping.com.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n[KVNGZ7-K4MRM]",
+                    "ai_reply": "Thanks for your message! While you await a detailed response, you might find immediate solutions for AI automation, Shopify, or geo-related needs. I recommend checking out vetted AI experts here: https://www.fiverr.com/search/gigs?query=ai+automation+shopify+geo&af=510726. They can help streamline your operations quickly.\n\nBest,\nAlex"
+                }
+            ],
+            "created_at": "2026-10-21 16:04:12"
+        },
+        "help@eriksbikeshop.com": {
+            "store_name": "ERIK'S Bike Board & Ski",
+            "lead_type": "D2C_STORE",
+            "niche": "Sporting Goods Retailer",
+            "url": "eriksbikeshop.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 16:05:38",
+                    "action": "OUTREACH_SENT",
+                    "subject": "ChatGPT Recommends ERIK'S?"
+                }
+            ],
+            "created_at": "2026-10-21 16:04:39"
+        },
+        "info@thelittlelearnerstoys.com": {
+            "store_name": "Little Learners Toys",
+            "lead_type": "D2C_STORE",
+            "niche": "Educational Toys",
+            "url": "thelittlelearnerstoys.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 17:08:06",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Little Learners Toys"
+                }
+            ],
+            "created_at": "2026-10-21 17:07:15"
+        },
+        "yt-support-solutions-kr@google.com": {
+            "store_name": "YouTube",
+            "lead_type": "D2C_STORE",
+            "niche": "Video Sharing Platform",
+            "url": "youtube.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 17:08:44",
+                    "action": "OUTREACH_SENT",
+                    "subject": "YouTube's AI Recommendation Edge"
+                }
+            ],
+            "created_at": "2026-10-21 17:07:34"
+        },
+        "customerservice@clic.com": {
+            "store_name": "Clic",
+            "lead_type": "D2C_STORE",
+            "niche": "Kids Clothing",
+            "url": "clic.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 18:10:42",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI Growth for Clic?"
+                }
+            ],
+            "created_at": "2026-10-21 18:09:48"
+        },
+        "customerservice@kids-world.com": {
+            "store_name": "Kids-World",
+            "lead_type": "D2C_STORE",
+            "niche": "Kids' Clothing",
+            "url": "kids-world.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 18:11:32",
+                    "action": "OUTREACH_SENT",
+                    "subject": "AI growth for Kids-World?"
+                }
+            ],
+            "created_at": "2026-10-21 18:10:08"
+        },
+        "support@buyoutlet.com": {
+            "store_name": "Buy Outlet",
+            "lead_type": "D2C_STORE",
+            "niche": "Kids Designer Clothing",
+            "url": "buyoutlet.com",
+            "status": "OUTREACH_SENT",
+            "history": [
+                {
+                    "time": "2026-10-21 18:12:59",
+                    "action": "OUTREACH_SENT",
+                    "subject": "Quick question regarding Buy Outlet"
+                }
+            ],
+            "created_at": "2026-10-21 18:10:28"
+        }
+    }
+}

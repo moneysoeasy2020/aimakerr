@@ -1,0 +1,12 @@
+testnet.shadeprotocol.io
+www.shadeprotocol.io
+alpha.shadeprotocol.io
+staging.api.shadeprotocol.io
+forum.shadeprotocol.io
+airdrop.shadeprotocol.io
+beta.shadeprotocol.io
+blog.shadeprotocol.io
+v1.api.shadeprotocol.io
+app.shadeprotocol.io
+docs.shadeprotocol.io
+eot.shadeprotocol.io

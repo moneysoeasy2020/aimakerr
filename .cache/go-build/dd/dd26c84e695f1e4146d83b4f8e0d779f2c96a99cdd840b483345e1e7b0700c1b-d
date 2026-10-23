@@ -1,0 +1,8 @@
+./ccache.go
+./credential.go
+./encryption_key.go
+./keytab.go
+./nt_hash.go
+./options.go
+./password.go
+./user.go

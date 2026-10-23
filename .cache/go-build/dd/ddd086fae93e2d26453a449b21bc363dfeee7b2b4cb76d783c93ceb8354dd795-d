@@ -1,0 +1,7 @@
+./ci.go
+./const.go
+./doc.go
+./fail.go
+./skip.go
+./testing.go
+./vars.go

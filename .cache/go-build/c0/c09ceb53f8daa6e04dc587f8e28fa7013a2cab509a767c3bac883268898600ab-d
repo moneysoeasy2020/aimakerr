@@ -1,0 +1,6 @@
+./arm.go
+./bcj.go
+./bra.go
+./ppc.go
+./reader.go
+./sparc.go

@@ -1,0 +1,166 @@
+import os
+import time
+from datetime import datetime
+import pandas as pd
+import requests
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
+
+# ==================== 策略与凭据配置 ====================
+# FOMO API Key
+API_KEY = (
+    "fapi_f0a61727a53f4c62a5a8cfb744b05c3dc6ab9d4c65f84ffda7ce6633b88592a0"
+)
+
+# Telegram Bot 推送配置
+TG_BOT_TOKEN = "7931068876:AAE4IIG431xCGjTIPoJ0dGKdqmKRtNKWZEA"
+TG_CHAT_ID = "7500708914"
+
+# 策略阈值参数
+TOP_N_TRADERS = 10  # 监控 Leaderboard 收益率前 N 名
+MIN_POSITION_VALUE_USD = 1000  # 单个交易员最小持仓门槛 (USD)，过滤小额试仓
+CONSENSUS_MIN_TRADERS = 2  # 触发共识的最少交易员人数
+CONSENSUS_MIN_TOTAL_USD = 5000  # 触发共识的该币种总持仓门槛 (USD)
+
+# 过滤黑名单：剔除原生公链主币、稳定币及常见包装代币
+SYMBOL_BLACKLIST = {
+    "SOL",
+    "ETH",
+    "BTC",
+    "USDC",
+    "USDT",
+    "WSOL",
+    "WETH",
+    "WBTC",
+}
+
+
+# ==================== 工具函数 ====================
+def send_telegram_alert(message: str):
+    """发送 Telegram 警报推送"""
+    if not TG_BOT_TOKEN or not TG_CHAT_ID:
+        return
+    url = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": TG_CHAT_ID,
+        "text": message,
+        "parse_mode": "Markdown",
+    }
+    try:
+        res = requests.post(url, json=payload, timeout=5)
+        if res.status_code != 200:
+            console.print(
+                f"[dim red]Telegram 推送失败: {res.text}[/dim red]"
+            )
+    except Exception as e:
+        console.print(f"[dim red]Telegram 请求异常: {e}[/dim red]")
+
+
+class SmartFomoMonitor:
+
+    def __init__(self):
+        self.base_url = "https://api.fomoapi.io"
+        self.headers = {
+            "Accept": "application/json",
+            "Authorization": f"Bearer {API_KEY}",
+        }
+
+    def get_top_traders(self) -> list:
+        """获取收益率榜单 Top 交易员"""
+        url = f"{self.base_url}/v2/leaderboard/24h"
+        try:
+            res = requests.get(url, headers=self.headers, timeout=10)
+            if res.status_code == 200:
+                data = res.json()
+                traders = data if isinstance(data, list) else data.get("data", [])
+                return traders[:TOP_N_TRADERS]
+            else:
+                console.print(
+                    f"[bold red]获取 Leaderboard 失败，状态码: {res.status_code}[/bold red]"
+                )
+                return []
+        except Exception as e:
+            console.print(f"[bold red]拉取 Leaderboard 异常: {e}[/bold red]")
+            return []
+
+    def get_trader_positions(self, handle: str) -> list:
+        """获取单个交易员符合金额门槛的持仓"""
+        url = f"{self.base_url}/v2/users/{handle}/balances"
+        try:
+            res = requests.get(url, headers=self.headers, timeout=10)
+            if res.status_code != 200:
+                return []
+            data = res.json()
+            balances = (
+                data.get("balances", []) if isinstance(data, dict) else data
+            )
+
+            valid_positions = []
+            for item in balances:
+                token_info = item.get("token", {})
+                symbol = (
+                    token_info.get("symbol")
+                    if isinstance(token_info, dict)
+                    else item.get("symbol")
+                )
+                value_usd = item.get("valueUsd", 0)
+
+                if not symbol:
+                    continue
+                symbol = str(symbol).upper()
+
+                # 聪明过滤：剔除黑名单币种与小额仓位
+                if (
+                    symbol not in SYMBOL_BLACKLIST
+                    and value_usd >= MIN_POSITION_VALUE_USD
+                ):
+                    valid_positions.append(
+                        {
+                            "handle": handle,
+                            "symbol": symbol,
+                            "value_usd": value_usd,
+                        }
+                    )
+            return valid_positions
+        except Exception:
+            return []
+
+    def analyze_and_notify(self):
+        """核心策略计算与信号筛选"""
+        console.print(
+            f"[dim][{datetime.now().strftime('%H:%M:%S')}] 正在扫描 Top {TOP_N_TRADERS} 交易员持仓...[/dim]"
+        )
+
+        traders = self.get_top_traders()
+        if not traders:
+            return
+
+        all_positions = []
+        for rank, trader in enumerate(traders, start=1):
+            handle = trader.get("handle") or trader.get("username")
+            if not handle:
+                continue
+
+            positions = self.get_trader_positions(handle)
+            for pos in positions:
+                pos["rank"] = rank
+                all_positions.append(pos)
+
+        if not all_positions:
+            self._render_table(pd.DataFrame())
+            return
+
+        df = pd.DataFrame(all_positions)
+
+        # 按币种聚合计算：重合人数、总持仓 USD、涉及排名
+        summary = (
+            df.groupby("symbol")
+            .agg(
+                trader_count=("handle", "nunique"),
+                total_value_usd=("value_usd", "sum"),
+                traders=("handle", lambda x: ", ".join(set(x))),
+                ranks=(
+                    "rank",
+                    lambda x: ", ".join(map(str, 

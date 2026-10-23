@@ -1,0 +1,5 @@
+./doc.go
+./execute.go
+./fuzz.go
+./parts.go
+./type.go

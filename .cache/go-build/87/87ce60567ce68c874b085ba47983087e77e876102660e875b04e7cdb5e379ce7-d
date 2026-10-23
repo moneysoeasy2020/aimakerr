@@ -1,0 +1,14 @@
+./attribs.go
+./chksum.go
+./client.go
+./compress.go
+./connection.go
+./const.go
+./demux.go
+./exclude.go
+./flist.go
+./fs.go
+./receiver.go
+./sender.go
+./ssh.go
+./utils.go

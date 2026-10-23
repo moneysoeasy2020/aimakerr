@@ -1,0 +1,76 @@
+version: gitlab.com/config/v1beta1
+current-context: gitlab-com-personal
+
+preferences:
+  retry-max: 5
+  retry-wait-min: 100s
+  retry-wait-max: 400s
+
+instances:
+  - name: gitlab-com
+    server: https://gitlab.com
+    api-version: v4
+    rate-limit:
+      requests-per-second: 600
+      burst: 60
+
+  - name: gitlab-self-hosted
+    server: https://gitlab.company.com
+    api-version: v4
+    insecure-skip-tls-verify: false
+    certificate-authority-file: /path/to/ca.crt
+    rate-limit:
+      requests-per-second: 1200
+      burst: 120
+
+  - name: gitlab-dev
+    server: https://dev-gitlab.company.com
+    api-version: v4
+    insecure-skip-tls-verify: true
+
+auths:
+  - name: personal-user
+    auth-info:
+      personal-access-token:
+        token-source:
+          env-var: GITLAB_TOKEN
+
+  - name: ci-user
+    auth-info:
+      job-token:
+        token-source:
+          env-var: CI_JOB_TOKEN
+
+  - name: oauth-user
+    auth-info:
+      oauth2:
+        access-token: ""  # Will be populated by OAuth flow
+        refresh-token: ""
+        client-id: "your-oauth-app-id"
+        client-secret-source:
+          file: ~/.config/gitlab/app-client-secret
+
+  - name: keyring-user
+    auth-info:
+      personal-access-token:
+        token-source:
+          keyring:
+            service: "gitlab-sdk"
+            user: "personal-token"
+
+contexts:
+  - name: gitlab-com-personal
+    instance: gitlab-com
+    auth: personal-user
+
+  - name: gitlab-com-ci
+    instance: gitlab-com
+    auth: ci-user
+
+  - name: company-dev
+    instance: gitlab-dev
+    auth: personal-user
+
+  - name: company-prod
+    instance: gitlab-self-hosted
+    auth: oauth-user

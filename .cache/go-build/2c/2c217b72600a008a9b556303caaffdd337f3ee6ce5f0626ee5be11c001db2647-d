@@ -1,0 +1,11 @@
+./banners.go
+./config.go
+./doc.go
+./enumerate.go
+./initialize.go
+./options.go
+./outputter.go
+./runner.go
+./stats.go
+./util.go
+./validate.go

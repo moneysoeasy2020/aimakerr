@@ -1,0 +1,34 @@
+name: 🔨 Build Test
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: "Lint"
+    if: "${{ !endsWith(github.actor, '[bot]') }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: projectdiscovery/actions/setup/go@v1
+      - uses: projectdiscovery/actions/golangci-lint@v1
+  
+  build:
+    name: Test Builds
+    needs: ["lint"]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: projectdiscovery/actions/setup/go@v1
+
+      - name: Test
+        run: go test ./...
+  
+      - name: Testing Examples
+        run: |
+          go run -race example/simple/main.go
+          go run -race example/impersonate/main.go
+          go run -race example/concurrent/concurrent.go

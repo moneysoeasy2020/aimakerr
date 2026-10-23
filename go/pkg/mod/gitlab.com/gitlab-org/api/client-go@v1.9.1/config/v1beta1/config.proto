@@ -1,0 +1,376 @@
+edition = "2023";
+
+package config.v1beta1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gitlab.com/gitlab-org/api/client-go/config/v1beta1";
+
+// Config represents the root configuration structure for GitLab SDK clients.
+// It follows a similar pattern to Kubernetes config with contexts and instances.
+message Config {
+  option (buf.validate.message).cel = {
+    id: "current_context_exists"
+    message: "current_context must reference an existing context name"
+    expression: "this.current_context == '' || this.current_context in this.contexts.map(c, c.name)"
+  };
+  option (buf.validate.message).cel = {
+    id: "context_instance_exists"
+    message: "context.instance must reference an existing instance name"
+    expression: "this.contexts.all(c, c.instance == '' || c.instance in this.instances.map(i, i.name))"
+  };
+  option (buf.validate.message).cel = {
+    id: "context_auth_exists"
+    message: "context.auth must reference an existing auth name"
+    expression: "this.contexts.all(c, c.auth == '' || c.auth in this.auths.map(a, a.name))"
+  };
+
+  // version specifies the configuration schema version
+  string version = 1 [
+    json_name = "version",
+    (buf.validate.field).string.const = "gitlab.com/config/v1beta1"
+  ];
+
+  // preferences contains global client preferences
+  Preferences preferences = 3 [json_name = "preferences"];
+
+  // instances contains the list of GitLab instances
+  repeated Instance instances = 4 [
+    json_name = "instances",
+    (buf.validate.field).repeated.(unique_names) = true
+  ];
+
+  // auths contains credential information for different authentication methods
+  repeated Auth auths = 5 [
+    json_name = "auths",
+    (buf.validate.field).repeated.(unique_names) = true
+  ];
+
+  // contexts contains the list of available contexts
+  repeated Context contexts = 6 [
+    json_name = "contexts",
+    (buf.validate.field).repeated.(unique_names) = true
+  ];
+
+  // current_context specifies the active context
+  string current_context = 7 [json_name = "current-context"];
+
+  // extensions specifies arbitrary custom configuration
+  map<string, google.protobuf.Struct> extensions = 8 [json_name = "extensions"];
+}
+
+// Preferences contains global client configuration preferences
+message Preferences {
+  option (buf.validate.message).cel = {
+    id: "retry_wait_both_or_neither"
+    message: "retry_wait_min and retry_wait_max must both be provided or both be omitted"
+    expression: "has(this.retry_wait_min) == has(this.retry_wait_max)"
+  };
+
+  // retry_max specifies the maximum number of retries
+  int32 retry_max = 2 [json_name = "retry-max"];
+
+  // retry_wait_min specifies the minimum wait time between retries (in milliseconds)
+  google.protobuf.Duration retry_wait_min = 3 [json_name = "retry-wait-min"];
+
+  // retry_wait_max specifies the maximum wait time between retries (in milliseconds)
+  google.protobuf.Duration retry_wait_max = 4 [json_name = "retry-wait-max"];
+}
+
+// Instance represents a GitLab instance configuration
+message Instance {
+  // name is the unique identifier for this instance
+  string name = 1 [
+    json_name = "name",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // server is the GitLab instance URL
+  string server = 2 [
+    json_name = "server",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.uri = true,
+    (buf.validate.field).string.example = "https://gitlab.com",
+    (buf.validate.field).string.example = "https://gitlab.com/api/v4"
+  ];
+
+  // api_version specifies the GitLab API version (defaults to v4)
+  string api_version = 3 [
+    json_name = "api-version",
+    (buf.validate.field).string.const = "v4"
+  ];
+
+  oneof instance_ca {
+    // certificate_authority contains the CA certificate data
+    string certificate_authority = 4 [json_name = "certificate-authority"];
+
+    // certificate_authority_source specifies how to get the CA certificate
+    CredentialSource certificate_authority_source = 5 [json_name = "certificate-authority-source"];
+  }
+
+  oneof instance_client_cert {
+    // client_cert contains the client certificate data for mTLS
+    string client_cert = 6 [json_name = "client-cert"];
+
+    // client_cert_source specifies how to get the client certificate for mTLS
+    CredentialSource client_cert_source = 7 [json_name = "client-cert-source"];
+  }
+
+  oneof instance_client_key {
+    // client_key contains the client key data for mTLS
+    string client_key = 8 [json_name = "client-key"];
+
+    // client_key_source specifies how to get the client key for mTLS
+    CredentialSource client_key_source = 9 [json_name = "client-key-source"];
+  }
+
+  // insecure_skip_tls_verify skips TLS certificate verification
+  bool insecure_skip_tls_verify = 10 [json_name = "insecure-skip-tls-verify"];
+
+  // rate_limit contains rate limiting configuration
+  RateLimit rate_limit = 11 [json_name = "rate-limit"];
+
+  // extensions specifies arbitrary custom configuration
+  map<string, google.protobuf.Struct> extensions = 12 [json_name = "extensions"];
+
+  // custom_headers can contain a list of additional headers to add to every request.
+  repeated Header custom_headers = 13 [json_name = "custom-headers"];
+}
+
+// RateLimit contains rate limiting configuration
+message RateLimit {
+  // requests_per_second specifies the maximum requests per second
+  double requests_per_second = 2 [
+    json_name = "requests-per-second",
+    (buf.validate.field).double.gt = 0
+  ];
+
+  // burst specifies the maximum burst size
+  int32 burst = 3 [
+    json_name = "burst",
+    (buf.validate.field).int32.gt = 0
+  ];
+}
+
+// Header contains a single HTTP header definition
+message Header {
+  // name contains the name of the header
+  string name = 1 [
+    json_name = "name",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  oneof header_value {
+    option (buf.validate.oneof).required = true;
+
+    // value contains the literal value of the header
+    string value = 2 [
+      json_name = "value",
+      (buf.validate.field).string.min_len = 1
+    ];
+
+    // value_from contains a source from where to retrieve the value from.
+    CredentialSource value_from = 3 [json_name = "value-from"];
+  }
+}
+
+// Context represents a combination of instance and auth
+message Context {
+  // name is the unique identifier for this context
+  string name = 1 [
+    json_name = "name",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // instance references an instance by name
+  string instance = 2 [
+    json_name = "instance",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // auth references an auth by name
+  string auth = 3 [
+    json_name = "auth",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+// Auth contains authentication information
+message Auth {
+  // name is the unique identifier for this auth
+  string name = 1 [
+    json_name = "name",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // auth_info contains the authentication details
+  AuthInfo auth_info = 2 [
+    json_name = "auth-info",
+    (buf.validate.field).required = true
+  ];
+}
+
+// AuthInfo contains authentication configuration
+message AuthInfo {
+  // auth_provider specifies the authentication method
+  oneof auth_provider {
+    option (buf.validate.oneof).required = true;
+
+    PersonalAccessToken personal_access_token = 1 [json_name = "personal-access-token"];
+    JobToken job_token = 2 [json_name = "job-token"];
+    OAuth2 oauth2 = 3 [json_name = "oauth2"];
+    BasicAuth basic_auth = 4 [json_name = "basic-auth"];
+  }
+}
+
+// PersonalAccessToken contains personal access token authentication
+message PersonalAccessToken {
+  oneof personal_access_token {
+    option (buf.validate.oneof).required = true;
+
+    // token contains the actual token value
+    string token = 1 [json_name = "token"];
+
+    // token_source specifies how to obtain the token
+    CredentialSource token_source = 2 [json_name = "token-source"];
+  }
+}
+
+// JobToken contains CI job token authentication
+message JobToken {
+  oneof job_token {
+    option (buf.validate.oneof).required = true;
+
+    // token contains the actual token value
+    string token = 1 [json_name = "token"];
+
+    // token_source specifies how to obtain the token
+    CredentialSource token_source = 2 [json_name = "token-source"];
+  }
+}
+
+// OAuth2 contains OAuth2 token authentication
+message OAuth2 {
+  // client_id contains the client_id for the OAuth2 app. If not set, then a default client_id is used
+  string client_id = 1 [json_name = "client-id"];
+
+  oneof oauth2_client_secret {
+    // client_secret contains the client secret for the OAuth2 app. If not set, then a default client secret might be used
+    string client_secret = 2 [json_name = "client-secret"];
+
+    // client_secret specifies how to obtain the client secret
+    CredentialSource client_secret_source = 3 [json_name = "client-secret-source"];
+  }
+
+  oneof oauth2_access_token {
+    // access_token contains the OAuth access token
+    string access_token = 4 [json_name = "access-token"];
+
+    // access_token_source specifies how to obtain the access token
+    CredentialSource access_token_source = 5 [json_name = "access-token-source"];
+  }
+
+  oneof oauth2_refresh_token {
+    // refresh_token contains the OAuth refresh token
+    string refresh_token = 6 [json_name = "refresh-token"];
+
+    // token_source specifies how to obtain the refresh token
+    CredentialSource refresh_token_source = 7 [json_name = "refresh-token-source"];
+  }
+
+  // expires_at contains the token expiration time
+  google.protobuf.Timestamp expires_at = 8 [json_name = "expires-at"];
+}
+
+message BasicAuth {
+  oneof basic_auth_username {
+    option (buf.validate.oneof).required = true;
+
+    string username = 1 [json_name = "username"];
+    CredentialSource username_source = 2 [json_name = "username-source"];
+  }
+
+  oneof basic_auth_password {
+    option (buf.validate.oneof).required = true;
+
+    string password = 3 [json_name = "password"];
+    CredentialSource password_source = 4 [json_name = "password-source"];
+  }
+}
+
+// ExecCredential contains configuration for executable credential providers
+message ExecCredential {
+  // command is the executable to run
+  string command = 1 [
+    json_name = "command",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // args contains arguments to pass to the command
+  repeated string args = 2 [json_name = "args"];
+
+  // env contains environment variables to set
+  map<string, string> env = 3 [json_name = "env"];
+
+  // timeout specifies the execution timeout (in seconds)
+  google.protobuf.Duration timeout = 4 [json_name = "timeout"];
+}
+
+// CredentialSource specifies how to obtain credential values
+message CredentialSource {
+  oneof source {
+    option (buf.validate.oneof).required = true;
+
+    // literal value stored directly in config
+    string value = 1 [json_name = "value"];
+
+    // environment variable name
+    string env_var = 2 [json_name = "env-var"];
+
+    // file path containing the credential
+    string file = 3 [json_name = "file"];
+
+    // command to execute to get the credential
+    ExecCredential exec = 4 [json_name = "exec"];
+
+    // keyring/keychain entry
+    KeyringSource keyring = 5 [json_name = "keyring"];
+  }
+}
+
+// KeyringSource specifies keyring/keychain credential storage
+message KeyringSource {
+  // service name in the keyring
+  string service = 1 [
+    json_name = "service",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
+  ];
+
+  // user name is the keyring
+  string user = 2 [
+    json_name = "user",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
+  ];
+}
+
+// See https://buf.build/docs/protovalidate/schemas/predefined-rules/#define-rules
+extend buf.validate.RepeatedRules {
+  bool unique_names = 80000042 [(buf.validate.predefined).cel = {
+    id: "unique_names"
+    message: "all names must be unique"
+    expression: "this.map(i, i.name).all(name, this.filter(j, j.name == name).size() == 1)"
+  }];
+}

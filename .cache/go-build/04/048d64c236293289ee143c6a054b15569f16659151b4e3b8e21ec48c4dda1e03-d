@@ -1,0 +1,10 @@
+./debug.go
+./eval.go
+./hashtable.go
+./int.go
+./interp.go
+./library.go
+./profile.go
+./unpack.go
+./value.go
+./empty.s

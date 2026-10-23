@@ -1,0 +1,4 @@
+./doc.go
+./hostsfile.go
+./hostsfile_unix.go
+./shared.go

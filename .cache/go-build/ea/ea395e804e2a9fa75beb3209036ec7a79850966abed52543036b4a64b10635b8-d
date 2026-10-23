@@ -1,0 +1,4 @@
+./cli.go
+./filewithrotation.go
+./newline.go
+./writer.go

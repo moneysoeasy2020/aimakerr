@@ -1,0 +1,9 @@
+./aes128-cts-hmac-sha1-96.go
+./aes128-cts-hmac-sha256-128.go
+./aes256-cts-hmac-sha1-96.go
+./aes256-cts-hmac-sha384-192.go
+./crypto.go
+./des-cbc-crc.go
+./des-cbc-md5.go
+./des3-cbc-sha1-kd.go
+./rc4-hmac.go

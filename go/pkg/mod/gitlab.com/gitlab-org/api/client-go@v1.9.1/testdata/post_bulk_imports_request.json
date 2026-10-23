@@ -1,0 +1,16 @@
+{
+  "configuration": {
+    "url": "https://source-gitlab-instance.example.com",
+    "access_token": "source-gitlab-instance-access-token"
+  },
+  "entities": [
+    {
+      "source_type": "group_entity",
+      "source_full_path": "gitlab-org/gitlab",
+      "destination_slug": "destination_slug",
+      "destination_namespace": "destination/namespace/path",
+      "migrate_projects": true,
+      "migrate_memberships": true
+    }
+  ]
+}

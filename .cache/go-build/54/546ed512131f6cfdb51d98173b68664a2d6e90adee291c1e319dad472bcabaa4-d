@@ -1,0 +1,10 @@
+./asrep.go
+./client.go
+./getpac.go
+./getst.go
+./gettgt.go
+./keylist.go
+./keytab.go
+./pac.go
+./tgsrep.go
+./ticketer.go

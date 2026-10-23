@@ -1,0 +1,4 @@
+./downloader.go
+./examples.go
+./generator.go
+./openapi.go

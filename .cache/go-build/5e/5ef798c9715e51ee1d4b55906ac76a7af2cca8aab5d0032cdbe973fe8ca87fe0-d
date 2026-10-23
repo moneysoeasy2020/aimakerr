@@ -1,0 +1,7 @@
+./chain.go
+./cookiejar.go
+./httputil.go
+./internal.go
+./normalization.go
+./respChain.go
+./response.go

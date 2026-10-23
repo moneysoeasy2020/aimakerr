@@ -1,0 +1,11 @@
+./activation_properties.go
+./class_id.go
+./context.go
+./dcom.go
+./dualstringarray.go
+./error_info_string.go
+./extension.go
+./id.go
+./iid.go
+./interface_pointer.go
+./options.go

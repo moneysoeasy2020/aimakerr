@@ -1,0 +1,20 @@
+[
+  {
+    "id": "51856a574ac3302a95f82483d6c7396b1e0783cb",
+    "short_id": "51856a57",
+    "created_at": "2014-02-27T10:05:10.000Z",
+    "parent_ids": [
+      "57a82e2180507c9e12880c0747f0ea65ad489515"
+    ],
+    "title": "Commit title",
+    "message": "Commit message",
+    "author_name": "Example User",
+    "author_email": "user@example.com",
+    "authored_date": "2014-02-27T10:05:10.000Z",
+    "committer_name": "Example User",
+    "committer_email": "user@example.com",
+    "committed_date": "2014-02-27T10:05:10.000Z",
+    "trailers": {},
+    "web_url": "https://gitlab.example.com/project/path/-/commit/51856a574ac3302a95f82483d6c7396b1e0783cb"
+  }
+]

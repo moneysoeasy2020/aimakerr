@@ -1,0 +1,4 @@
+./collections.go
+./globaldata.go
+./sdk.go
+./threathunting.go

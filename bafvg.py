@@ -1,0 +1,382 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+==============================================================================
+Termux 专用高级量化脚本：FVG + 订单流 + 多周期共振 + 金字塔推仓 + ATR动态止损
+==============================================================================
+[环境说明] 专为 Termux (Android Linux) 环境优化，包含 PID 锁、异常捕获与后台守护
+"""
+
+import os
+import sys
+import time
+import signal
+import atexit
+import logging
+import ccxt
+import pandas as pd
+import numpy as np
+from datetime import datetime
+
+# ==========================================
+# 1. Termux 环境初始化与代码前缀 (PID 锁与日志)
+# ==========================================
+SCRIPT_NAME = "binance_fvg_breakout"
+PID_FILE = f"/tmp/{SCRIPT_NAME}.pid"
+LOG_FILE = f"{SCRIPT_NAME}.log"
+
+# 配置日志输出 (同时输出至终端与 Termux 日志文件)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_FILE, encoding='utf-8'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+def cleanup_pid():
+    """退出时自动清理 PID 文件"""
+    if os.path.exists(PID_FILE):
+        os.remove(PID_FILE)
+        logging.info("[Termux] 策略已安全退出，PID 锁文件已清理")
+
+def handle_signal(sig, frame):
+    """响应 SIGINT / SIGTERM 信号实现优雅退出"""
+    logging.info(f"[Termux] 接收到退出信号 ({sig})，正在结束进程...")
+    sys.exit(0)
+
+# 注册 Exit 钩子与信号监听
+atexit.register(cleanup_pid)
+signal.signal(signal.SIGINT, handle_signal)
+signal.signal(signal.SIGTERM, handle_signal)
+
+# 检查 PID 锁，防止 Termux 中重复启动多个副本
+if os.path.exists(PID_FILE):
+    with open(PID_FILE, 'r') as f:
+        old_pid = f.read().strip()
+    logging.warning(f"[Termux] 警告：找到正在运行的 PID 锁 ({old_pid})，程序退出。")
+    sys.exit(1)
+
+with open(PID_FILE, 'w') as f:
+    f.write(str(os.getpid()))
+
+logging.info(f"[Termux] 策略进程启动成功 | PID: {os.getpid()}")
+
+
+# ==========================================
+# 2. 策略全局参数与 API 密钥
+# ==========================================
+# 请替换为你的币安 API Key (建议在 Termux 中通过环境变量加载)
+API_KEY = os.getenv("BINANCE_API_KEY", "YOUR_BINANCE_API_KEY")
+SECRET_KEY = os.getenv("BINANCE_SECRET_KEY", "YOUR_BINANCE_SECRET_KEY")
+
+MAX_OPEN_POSITIONS = 2         # 最大同时持仓币种数[span_0](start_span)[span_0](end_span)
+LEVERAGE = 10                  # 杠杆倍数[span_1](start_span)[span_1](end_span)
+BASE_POSITION_PCT = 0.30       # Phase 1 首仓比例 (30%)[span_2](start_span)[span_2](end_span)
+ADD_POS_1_PCT = 0.20           # Phase 2 浮盈 +3% 加仓比例 (20%)[span_3](start_span)[span_3](end_span)
+ADD_POS_2_PCT = 0.10           # Phase 3 浮盈 +6% 加仓比例 (10%)[span_4](start_span)[span_4](end_span)
+
+# 冷却机制 (秒)
+COOLDOWN_STOP_LOSS = 6 * 3600  # 止损后冷却 6 小时[span_5](start_span)[span_5](end_span)
+COOLDOWN_TRADE = 12 * 3600     # 交易后冷却 12 小时[span_6](start_span)[span_6](end_span)
+
+# 订单流与 FVG 门槛
+MIN_OBI = 0.25                 # OBI 深度不平衡度 >= 0.25[span_7](start_span)[span_7](end_span)
+MIN_TAKER_BUY_RATIO = 0.55     # Taker 主买占比 >= 55%[span_8](start_span)[span_8](end_span)
+MIN_FVG_PCT = 0.003            # FVG 机构失衡缺口 >= 0.3%
+
+
+# ==========================================
+# 3. 动态移动止损与 FVG 风控模块
+# ==========================================
+class TrailingStopManager:
+    def __init__(self, symbol, entry_price, side="LONG", fvg_bottom=None, initial_atr=0.0):
+        self.symbol = symbol
+        self.entry_price = entry_price
+        self.side = side
+        self.highest_price = entry_price
+        self.is_breakeven_active = False
+
+        # 硬止损优先挂在 FVG 下沿下方 0.1%，若无则使用 1.5 倍 ATR
+        if side == "LONG":
+            if fvg_bottom and fvg_bottom < entry_price:
+                self.stop_loss = fvg_bottom * 0.999
+            else:
+                self.stop_loss = entry_price - (initial_atr * 1.5) if initial_atr > 0 else entry_price * 0.985
+        else:
+            self.stop_loss = entry_price * 1.015
+
+    def update(self, current_price, current_atr):
+        if self.side == "LONG":
+            if current_price > self.highest_price:
+                self.highest_price = current_price
+
+            profit_pct = (self.highest_price - self.entry_price) / self.entry_price
+
+            # +3% 浮盈保本[span_9](start_span)[span_9](end_span)
+            if profit_pct >= 0.03 and not self.is_breakeven_active:
+                self.stop_loss = max(self.stop_loss, self.entry_price * 1.001)
+                self.is_breakeven_active = True
+
+            # +5% ~ +8% 激活 2.0 倍 ATR 移动追踪
+            if 0.05 <= profit_pct < 0.08:
+                new_stop = self.highest_price - (current_atr * 2.0)
+                self.stop_loss = max(self.stop_loss, new_stop)
+
+            # >= +8% 缩紧至 1.2 倍 ATR 追踪
+            elif profit_pct >= 0.08:
+                new_stop = self.highest_price - (current_atr * 1.2)
+                self.stop_loss = max(self.stop_loss, new_stop)
+
+            if current_price <= self.stop_loss:
+                reason = "STOP_LOSS_EXIT" if not self.is_breakeven_active else "TRAILING_TAKE_PROFIT_EXIT"
+                return True, reason, self.stop_loss
+
+        return False, "HOLD", self.stop_loss
+
+
+# ==========================================
+# 4. 核心交易引擎
+# ==========================================
+class TradingEngine:
+    def __init__(self):
+        self.exchange = ccxt.binance({
+            'apiKey': API_KEY,
+            'secret': SECRET_KEY,
+            'enableRateLimit': True,
+            'options': {'defaultType': 'future'}
+        })
+        self.positions = {}
+        self.cooldowns = {}
+
+    def check_cooldown(self, symbol):
+        if symbol in self.cooldowns and time.time() < self.cooldowns[symbol]:
+            return False
+        return True
+
+    def set_cooldown(self, symbol, duration_seconds):
+        self.cooldowns[symbol] = time.time() + duration_seconds
+        logging.info(f"[{symbol}] 进入冷却状态 {duration_seconds/3600:.1f} 小时")
+
+    def fetch_klines(self, symbol, timeframe, limit=100):
+        try:
+            ohlcv = self.exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
+            df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+            return df
+        except Exception as e:
+            logging.error(f"获取 {symbol} {timeframe} K线失败: {e}")
+            return None
+
+    def calculate_atr(self, df, period=14):
+        high_low = df['high'] - df['low']
+        high_close = np.abs(df['high'] - df['close'].shift())
+        low_close = np.abs(df['low'] - df['close'].shift())
+        tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
+        return tr.rolling(period).mean().iloc[-1]
+
+    def check_btc_trend_1h(self):
+        """BTC 1H EMA20 趋势控制[span_10](start_span)[span_10](end_span)"""
+        df = self.fetch_klines('BTC/USDT', '1h', limit=50)
+        if df is None: return "NEUTRAL"
+        df['ema20'] = df['close'].ewm(span=20, adjust=False).mean()
+        return "BULLISH" if df['close'].iloc[-1] > df['ema20'].iloc[-1] else "BEARISH"
+
+    def fetch_order_flow_metrics(self, symbol):
+        """获取 OBI 与 Taker 占比[span_11](start_span)[span_11](end_span)"""
+        try:
+            orderbook = self.exchange.fetch_order_book(symbol, limit=10)
+            bid_vol = sum([b[1] for b in orderbook['bids']])
+            ask_vol = sum([a[1] for a in orderbook['asks']])
+            obi = (bid_vol - ask_vol) / (bid_vol + ask_vol) if (bid_vol + ask_vol) > 0 else 0
+
+            trades = self.exchange.fetch_trades(symbol, limit=100)
+            taker_buy_vol = sum([t['amount'] for t in trades if t['side'] == 'buy'])
+            total_vol = sum([t['amount'] for t in trades])
+            taker_buy_ratio = taker_buy_vol / total_vol if total_vol > 0 else 0.5
+
+            return obi, taker_buy_ratio
+        except Exception as e:
+            logging.error(f"获取 {symbol} 订单流数据失败: {e}")
+            return 0.0, 0.5
+
+    def detect_fvg_15m(self, df_15m):
+        """15m 突破 FVG 判定"""
+        if len(df_15m) < 4:
+            return False, 0.0, 0.0
+
+        k1 = df_15m.iloc[-3]
+        k3 = df_15m.iloc[-1]
+
+        if k3['low'] > k1['high']:
+            fvg_gap = (k3['low'] - k1['high']) / k1['high']
+            if fvg_gap >= MIN_FVG_PCT:
+                return True, k1['high'], k3['low']
+
+        return False, 0.0, 0.0
+
+    def check_entry_signal(self, symbol, btc_trend):
+        """四重共振条件检测"""
+        if not self.check_cooldown(symbol):
+            return None, 0.0
+
+        df_1h = self.fetch_klines(symbol, '1h', limit=30)
+        df_15m = self.fetch_klines(symbol, '15m', limit=30)
+        if df_1h is None or df_15m is None: return None, 0.0
+
+        current_price = df_15m['close'].iloc[-1]
+
+        # 1. 1H 结构意向
+        h1_high_20 = df_1h['high'].iloc[-21:-1].max()
+        h1_near_breakout = (current_price >= h1_high_20 * 0.995)
+
+        # 2. 15m 动能突破
+        m15_high_20 = df_15m['high'].iloc[-21:-1].max()
+        m15_vol_ma5 = df_15m['volume'].iloc[-6:-1].mean()
+        m15_breakout = (current_price > m15_high_20)
+        m15_volume_spike = (df_15m['volume'].iloc[-1] > m15_vol_ma5 * 1.5)
+
+        # 3. 订单流印证[span_12](start_span)[span_12](end_span)
+        obi, taker_ratio = self.fetch_order_flow_metrics(symbol)
+        flow_pass = (obi >= MIN_OBI) and (taker_ratio >= MIN_TAKER_BUY_RATIO)
+
+        # 4. FVG 缺口印证
+        has_fvg, fvg_bottom, fvg_top = self.detect_fvg_15m(df_15m)
+
+        if (btc_trend == "BULLISH" and h1_near_breakout and 
+            m15_breakout and m15_volume_spike and flow_pass and has_fvg):
+            logging.info(f"[{symbol}] 捕获四重共振突破信号！")
+            return "LONG", fvg_bottom
+
+        return None, 0.0
+
+    def execute_market_order(self, symbol, side, amount_usdt):
+        try:
+            ticker = self.exchange.fetch_ticker(symbol)
+            price = ticker['last']
+            quantity = amount_usdt / price
+            
+            self.exchange.set_leverage(LEVERAGE, symbol)
+            order = self.exchange.create_order(symbol, 'MARKET', side.lower(), quantity)
+            logging.info(f"[{symbol}] 执行 {side} 成功 | 金额: {amount_usdt:.2f} USDT | 价格: {price}")
+            return order, price, quantity
+        except Exception as e:
+            logging.error(f"[{symbol}] 下单失败: {e}")
+            return None, 0, 0
+
+    def manage_positions(self):
+        """持仓与金字塔推仓监控"""
+        for symbol in list(self.positions.keys()):
+            pos = self.positions[symbol]
+            df_15m = self.fetch_klines(symbol, '15m', limit=30)
+            if df_15m is None: continue
+
+            current_price = df_15m['close'].iloc[-1]
+            current_atr_15m = self.calculate_atr(df_15m)
+            entry_price = pos['avg_entry_price']
+            profit_pct = (current_price - entry_price) / entry_price if pos['side'] == "LONG" else (entry_price - current_price) / entry_price
+
+            # 1. 移动止损检查
+            ts_manager = pos['ts_manager']
+            should_exit, reason, stop_price = ts_manager.update(current_price, current_atr_15m)
+
+            if should_exit:
+                logging.info(f"[{symbol}] 平仓触发 [{reason}] | 价格: {current_price}")
+                self.execute_market_order(symbol, "SELL" if pos['side'] == "LONG" else "BUY", pos['total_usdt'])
+                
+                if "STOP_LOSS" in reason:
+                    self.set_cooldown(symbol, COOLDOWN_STOP_LOSS)[span_13](start_span)[span_13](end_span)
+                else:
+                    self.set_cooldown(symbol, COOLDOWN_TRADE)[span_14](start_span)[span_14](end_span)
+                    
+                del self.positions[symbol]
+                continue
+
+            # 2. 金字塔推仓 (Phase 2 & Phase 3)[span_15](start_span)[span_15](end_span)
+            if pos['phase'] == 1 and profit_pct >= 0.03:
+                add_usdt = pos['initial_usdt'] * (ADD_POS_1_PCT / BASE_POSITION_PCT)
+                _, p, q = self.execute_market_order(symbol, pos['side'], add_usdt)
+                if p > 0:
+                    pos['phase'] = 2
+                    pos['total_usdt'] += add_usdt
+                    pos['avg_entry_price'] = (entry_price * pos['total_qty'] + p * q) / (pos['total_qty'] + q)
+                    pos['total_qty'] += q
+                    logging.info(f"[{symbol}] +3% 浮盈达成，触发 Phase 2 加仓！")[span_16](start_span)[span_16](end_span)
+
+            elif pos['phase'] == 2 and profit_pct >= 0.06:
+                add_usdt = pos['initial_usdt'] * (ADD_POS_2_PCT / BASE_POSITION_PCT)
+                _, p, q = self.execute_market_order(symbol, pos['side'], add_usdt)
+                if p > 0:
+                    pos['phase'] = 3
+                    pos['total_usdt'] += add_usdt
+                    pos['avg_entry_price'] = (entry_price * pos['total_qty'] + p * q) / (pos['total_qty'] + q)
+                    pos['total_qty'] += q
+                    logging.info(f"[{symbol}] +6% 浮盈达成，触发 Phase 3 加仓！")[span_17](start_span)[span_17](end_span)
+
+    def run_loop(self):
+        logging.info("=== 策略引擎循环启动 (Termux 监控模式) ===")
+        
+        while True:
+            try:
+                self.manage_positions()
+
+                if len(self.positions) < MAX_OPEN_POSITIONS:
+                    btc_trend = self.check_btc_trend_1h()[span_18](start_span)[span_18](end_span)
+                    
+                    tickers = self.exchange.fetch_tickers()
+                    sorted_symbols = sorted(
+                        [s for s in tickers if s.endswith('/USDT') and 'BTC' not in s],
+                        key=lambda x: tickers[x]['quoteVolume'],
+                        reverse=True
+                    )[:30][span_19](start_span)[span_19](end_span)
+
+                    for symbol in sorted_symbols:
+                        if len(self.positions) >= MAX_OPEN_POSITIONS:
+                            break
+                        if symbol in self.positions:
+                            continue
+
+                        signal, fvg_bottom = self.check_entry_signal(symbol, btc_trend)
+                        if signal == "LONG":
+                            balance = self.exchange.fetch_balance()['USDT']['free']
+                            initial_usdt = balance * BASE_POSITION_PCT * LEVERAGE
+                            
+                            order, price, qty = self.execute_market_order(symbol, "BUY", initial_usdt)
+                            if order and price > 0:
+                                df_15m = self.fetch_klines(symbol, '15m', limit=20)
+                                atr = self.calculate_atr(df_15m) if df_15m is not None else price * 0.015
+                                
+                                ts = TrailingStopManager(symbol, price, side="LONG", fvg_bottom=fvg_bottom, initial_atr=atr)
+                                
+                                self.positions[symbol] = {
+                                    'side': 'LONG',
+                                    'phase': 1,
+                                    'initial_usdt': initial_usdt,
+                                    'total_usdt': initial_usdt,
+                                    'total_qty': qty,
+                                    'avg_entry_price': price,
+                                    'ts_manager': ts
+                                }
+                                self.set_cooldown(symbol, COOLDOWN_TRADE)[span_20](start_span)[span_20](end_span)
+
+                time.sleep(15)
+
+            except Exception as e:
+                logging.error(f"[Termux 异常捕捉] 循环错误: {e}")
+                time.sleep(10)
+
+
+# ==========================================
+# 5. 代码后缀语法逻辑 (Termux 守护启动)
+# ==========================================
+if __name__ == '__main__':
+    try:
+        engine = TradingEngine()
+        engine.run_loop()
+    except KeyboardInterrupt:
+        logging.info("[Termux] 收到键盘中断信号，程序停止运行。")
+    except Exception as fatal_error:
+        logging.critical(f"[Termux] 致命未捕获错误: {fatal_error}", exc_info=True)
+    finally:
+        cleanup_pid()

@@ -1,0 +1,7 @@
+./compile.go
+./doc.go
+./fuzz_harness.go
+./match.go
+./matchers.go
+./matchers_types.go
+./validate.go

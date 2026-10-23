@@ -1,0 +1,4 @@
+./doc.go
+./ntlm.go
+./smb.go
+./telnet.go

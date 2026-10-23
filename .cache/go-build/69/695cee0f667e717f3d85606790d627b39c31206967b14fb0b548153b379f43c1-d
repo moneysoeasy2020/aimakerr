@@ -1,0 +1,4 @@
+./counter.go
+./doc.go
+./recorder.go
+./stats.go

@@ -1,0 +1,35 @@
+instructions:
+  - name: Go Source Files
+    fileFilters:
+      - "*.go"
+      - "!*_test.go"
+      - "!*_mock.go"
+      - "!*_generated.go"
+      - "!testing/**/*"
+    instructions: |
+      1. **Function Documentation**: Every public interface function, type, and method must have properly formatted comments starting with the function name (no "The" or "This function"), using present tense, keeping under 80 characters per line, and including GitLab API documentation link.
+      2. **Interface Documentation**: Interface functions must have properly formatted comments. Functions that implement a public interface are not required to have a formatted comment, but may still have a comment.
+      3. **API Alignment**: All code must align with GitLab's official API documentation. Every function must reference the corresponding GitLab API documentation URL.
+      4. **Service Structure**: Follow the established service pattern with interface definition at the top, service struct below, and proper interface compliance check.
+      5. **Request Options Pattern**: All API methods should accept `options ...RequestOptionFunc` and follow the standard error handling pattern returning `(*Type, *Response, error)` tuple.
+      6. **Type Usage**: Use `any` instead of `interface{}` and `int64` instead of `int` for all numeric types including slices and maps.
+      7. **Error Handling**: Always use `PathEscape()` for URL path parameters, `url.PathEscape()` for query parameters, and handle `parseID()` errors for project/group IDs.
+      8. **Field Ordering**: Struct fields and methods should be ordered to match the GitLab API documentation order.
+      9. **Pointer Usage**: Use pointers for structs that are used in Requests, and non-pointer for structs that are used in Responses.
+      10. **Parameter Validation**: Use `any` type for project/group IDs to support both int64 and string, implement proper parameter parsing with `parseID()` function.
+      11. **Variable Naming Standards**: Variables and function inputs should be named using lower camel casing to be consistent with the repository. "thisIsAVariable" is good, "this_is_a_variable" is bad.
+      12. **Brand Capitalization Consistency**: Always spell "GitLab" with the proper capitalization in code comments, log messages, documentation strings, test names, or any other textual content. "Gitlab" and "gitlab" are incorrect, and should be replaced with "GitLab".
+
+
+  - name: Go Test Files
+    fileFilters:
+      - "*_test.go"
+      - "!*_generated_test.go"
+    instructions: |
+      1. **Test Structure**: All tests must use `t.Parallel()`, use `testing` package with `testify/assert`, and follow the established test pattern with `setup(t)` function. Both `require` and `assert` are acceptable usages of the `testify/assert` package.
+      2. **Test Coverage**: Each service method should have corresponding test coverage. When fixing bugs or creating new features, ensure new test scenarios are added to cover the new logic.
+      3. **Gherkin Comments**: For complex tests, tests should have Gherkin comments in-line with tests using GIVEN/WHEN/THEN format to make tests easier to read. For less complex tests, these comments may be omitted.
+      4. **Mock Usage**: Use mock HTTP handlers for API testing and store test data in `testdata/` directory.
+      5. **Test Data**: For complex mock server responses, use `mustWriteHTTPResponse(t, w, "testdata/filename.json")` for test responses and `testMethod(t, r, http.MethodGet)` for HTTP method validation. For less complex responses, inline JSON is preferable.
+      6. **Assertions**: Use `assert.NoError(t, err)` and other testify assertions consistently. `require.NoError(t, err)` is also acceptable.
+

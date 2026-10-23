@@ -1,0 +1,4 @@
+./errors.go
+./helpers.go
+./interfaces.go
+./kind.go

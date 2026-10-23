@@ -1,0 +1,6 @@
+./memo.smb.go
+./memo.smb_private.go
+./memo.smbghost.go
+./smb.go
+./smb_private.go
+./smbghost.go

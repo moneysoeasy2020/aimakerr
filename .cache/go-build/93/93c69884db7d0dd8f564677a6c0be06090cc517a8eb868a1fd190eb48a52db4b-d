@@ -1,0 +1,4 @@
+./credentials.go
+./parser.go
+./prompt.go
+./target.go

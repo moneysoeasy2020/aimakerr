@@ -1,0 +1,650 @@
+package mapsutil
+
+import (
+	"errors"
+	"sync"
+	"testing"
+	"time"
+
+	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/maps"
+)
+
+const IterateCount = 100
+
+func TestSyncLockMap(t *testing.T) {
+	m := &SyncLockMap[string, string]{
+		Map: Map[string, string]{
+			"key1": "value1",
+			"key2": "value2",
+		},
+	}
+
+	t.Run("Test NewSyncLockMap with map ", func(t *testing.T) {
+		m := NewSyncLockMap(WithMap(Map[string, string]{
+			"key1": "value1",
+			"key2": "value2",
+		}))
+
+		if !m.Has("key1") || !m.Has("key2") {
+			t.Error("couldn't init SyncLockMap with NewSyncLockMap")
+		}
+	})
+
+	t.Run("Test NewSyncLockMap without map", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+		_ = m.Set("key1", "value1")
+		_ = m.Set("key2", "value2")
+
+		if !m.Has("key1") || !m.Has("key2") {
+			t.Error("couldn't init SyncLockMap with NewSyncLockMap")
+		}
+	})
+
+	t.Run("Test lock", func(t *testing.T) {
+		m.Lock()
+		if m.ReadOnly.Load() != true {
+			t.Error("failed to lock map")
+		}
+	})
+
+	t.Run("Test unlock", func(t *testing.T) {
+		m.Unlock()
+		if m.ReadOnly.Load() != false {
+			t.Error("failed to unlock map")
+		}
+	})
+
+	t.Run("Test set", func(t *testing.T) {
+		if err := m.Set("key3", "value3"); err != nil {
+			t.Error("failed to set item in map")
+		}
+		v, ok := m.Map["key3"]
+		if !ok || v != "value3" {
+			t.Error("failed to set item in map")
+		}
+	})
+
+	t.Run("Test delete", func(t *testing.T) {
+		_ = m.Set("key5", "value5")
+		if !m.Has("key5") {
+			t.Error("couldn't set item to delete")
+		}
+		m.Delete("key5")
+		if m.Has("key5") {
+			t.Error("couldn't delete item")
+		}
+	})
+
+	t.Run("Test set error", func(t *testing.T) {
+		m.Lock()
+		if err := m.Set("key4", "value4"); err != ErrReadOnly {
+			t.Error("expected read only error")
+		}
+	})
+
+	t.Run("Test get", func(t *testing.T) {
+		v, ok := m.Get("key2")
+		if !ok || v != "value2" {
+			t.Error("failed to get item from map")
+		}
+	})
+
+	t.Run("Test iterate", func(t *testing.T) {
+		err := m.Iterate(func(k string, v string) error {
+			if k != "key1" && k != "key2" && k != "key3" {
+				return errors.New("invalid key")
+			}
+			return nil
+		})
+		require.Nil(t, err, "failed to iterate map")
+	})
+}
+
+func TestSyncLockMapWithConcurrency(t *testing.T) {
+	internalMap := Map[string, string]{
+		"key1": "value1",
+		"key2": "value2",
+	}
+
+	m := &SyncLockMap[string, string]{
+		Map: internalMap,
+	}
+
+	t.Run("Test Clone", func(t *testing.T) {
+		for i := 0; i < IterateCount; i++ {
+			syncMap := m.Clone()
+			maps.Equal(internalMap, syncMap.Map)
+		}
+	})
+
+	t.Run("Test GetKeys", func(t *testing.T) {
+		for i := 0; i < IterateCount; i++ {
+			value, ok := m.Get("key1")
+			require.True(t, ok, "failed to get item from map")
+			require.Equal(t, "value1", value, "failed to get item from map")
+		}
+	})
+
+	t.Run("Test Set", func(t *testing.T) {
+		for i := 0; i < IterateCount; i++ {
+			err := m.Set("key3", "value3")
+			require.Nil(t, err, "failed to set item in map")
+			value, ok := m.Get("key3")
+			require.True(t, ok, "failed to get item from map")
+			require.Equal(t, "value3", value, "failed to get item from map")
+		}
+	})
+
+	t.Run("Test Has", func(t *testing.T) {
+		for i := 0; i < IterateCount; i++ {
+			ok := m.Has("key2")
+			require.True(t, ok, "failed to check item in map")
+		}
+	})
+
+	t.Run("Test Has Negative", func(t *testing.T) {
+		for i := 0; i < IterateCount; i++ {
+			ok := m.Has("key4")
+			require.False(t, ok, "failed to check item in map")
+		}
+	})
+
+	t.Run("Test IsEmpty", func(t *testing.T) {
+		emptyMap := &SyncLockMap[string, string]{}
+		for i := 0; i < IterateCount; i++ {
+			ok := m.IsEmpty()
+			require.False(t, ok, "failed to check item in map")
+			ok = emptyMap.IsEmpty()
+			require.True(t, ok, "failed to check item in map")
+		}
+	})
+
+	t.Run("Test GetAll", func(t *testing.T) {
+		for i := 0; i < IterateCount; i++ {
+			values := m.GetAll()
+			require.Equal(t, 3, len(values), "failed to get all items from map")
+		}
+	})
+
+	t.Run("Test GetKeyWithValue", func(t *testing.T) {
+		for i := 0; i < IterateCount; i++ {
+			key, ok := m.GetKeyWithValue("value1")
+			require.True(t, ok, "failed to get key from map")
+			require.Equal(t, "key1", key, "failed to get key from map")
+		}
+	})
+}
+
+func TestSyncLockMapWithEviction(t *testing.T) {
+	t.Run("Test WithEviction option", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](100*time.Millisecond, 5*time.Minute))
+
+		require.NotNil(t, m.evictionMap, "eviction map should be initialized")
+		require.Equal(t, 100*time.Millisecond, m.inactivityDuration, "inactivity duration should be set")
+		require.Equal(t, 5*time.Minute, m.cleanupInterval, "cleanup interval should be set to specified value")
+	})
+
+	t.Run("Test eviction after inactivity", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 30*time.Minute))
+
+		// Add some items
+		err := m.Set("key1", "value1")
+		require.NoError(t, err)
+		err = m.Set("key2", "value2")
+		require.NoError(t, err)
+
+		// Verify items exist
+		require.True(t, m.Has("key1"))
+		require.True(t, m.Has("key2"))
+
+		// Wait for items to become inactive (longer than inactivity duration)
+		time.Sleep(100 * time.Millisecond)
+
+		// Use external cleanup function for immediate cleanup
+		m.CleanupInactiveItems()
+
+		// Items should be evicted
+		require.False(t, m.Has("key1"))
+		require.False(t, m.Has("key2"))
+	})
+
+	t.Run("Test access resets eviction timer", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](100*time.Millisecond, 30*time.Minute))
+
+		// Add an item
+		err := m.Set("key1", "value1")
+		require.NoError(t, err)
+
+		// Access the item before eviction
+		time.Sleep(60 * time.Millisecond)
+		_, ok := m.Get("key1")
+		require.True(t, ok, "item should still exist after access")
+
+		// Wait a bit more but not enough for eviction
+		time.Sleep(60 * time.Millisecond)
+		_, ok = m.Get("key1")
+		require.True(t, ok, "item should still exist after recent access")
+
+		// Wait for item to become inactive, then trigger cleanup
+		time.Sleep(150 * time.Millisecond)
+		m.CleanupInactiveItems() // Use external cleanup function
+		_, ok = m.Get("key1")
+		require.False(t, ok, "item should be evicted after inactivity")
+	})
+
+	t.Run("Test Set updates access time", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](100*time.Millisecond, 30*time.Minute))
+
+		// Add an item
+		err := m.Set("key1", "value1")
+		require.NoError(t, err)
+
+		// Update the item before eviction
+		time.Sleep(60 * time.Millisecond)
+		err = m.Set("key1", "value1_updated")
+		require.NoError(t, err)
+
+		// Wait a bit more but not enough for eviction
+		time.Sleep(60 * time.Millisecond)
+		value, ok := m.Get("key1")
+		require.True(t, ok, "item should still exist after update")
+		require.Equal(t, "value1_updated", value, "value should be updated")
+
+		// Wait for item to become inactive, then trigger cleanup
+		time.Sleep(150 * time.Millisecond)
+		m.CleanupInactiveItems() // Use external cleanup function
+		_, ok = m.Get("key1")
+		require.False(t, ok, "item should be evicted after inactivity")
+	})
+
+	t.Run("Test Delete removes from eviction tracking", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 30*time.Minute))
+
+		// Add an item
+		err := m.Set("key1", "value1")
+		require.NoError(t, err)
+
+		// Delete the item
+		m.Delete("key1")
+		require.False(t, m.Has("key1"))
+
+		// Wait and verify it's not in eviction map
+		time.Sleep(100 * time.Millisecond)
+		require.False(t, m.Has("key1"))
+	})
+
+	t.Run("Test Clone with eviction", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](100*time.Millisecond, 30*time.Minute))
+
+		// Add some items
+		err := m.Set("key1", "value1")
+		require.NoError(t, err)
+		err = m.Set("key2", "value2")
+		require.NoError(t, err)
+
+		// Clone the map
+		cloned := m.Clone()
+
+		// Verify cloned map has the same items
+		require.True(t, cloned.Has("key1"))
+		require.True(t, cloned.Has("key2"))
+
+		// Verify cloned map has eviction enabled
+		require.Equal(t, m.inactivityDuration, cloned.inactivityDuration)
+		require.NotNil(t, cloned.evictionMap)
+	})
+
+	t.Run("Test external cleanup function", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 30*time.Minute))
+
+		// Add some items
+		err := m.Set("key1", "value1")
+		require.NoError(t, err)
+		err = m.Set("key2", "value2")
+		require.NoError(t, err)
+
+		// Verify items exist
+		require.True(t, m.Has("key1"))
+		require.True(t, m.Has("key2"))
+
+		// Wait for items to become inactive
+		time.Sleep(100 * time.Millisecond)
+
+		// Use external cleanup function
+		m.CleanupInactiveItems()
+
+		// Items should be evicted
+		require.False(t, m.Has("key1"))
+		require.False(t, m.Has("key2"))
+	})
+
+	t.Run("Test different cleanup intervals", func(t *testing.T) {
+		// Map with 1-minute cleanup interval
+		m1 := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 1*time.Minute))
+		require.Equal(t, 1*time.Minute, m1.cleanupInterval, "cleanup interval should be 1 minute")
+
+		// Map with 5-minute cleanup interval
+		m2 := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 5*time.Minute))
+		require.Equal(t, 5*time.Minute, m2.cleanupInterval, "cleanup interval should be 5 minutes")
+
+		// Map with 1-hour cleanup interval
+		m3 := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 1*time.Hour))
+		require.Equal(t, 1*time.Hour, m3.cleanupInterval, "cleanup interval should be 1 hour")
+	})
+
+}
+
+func TestSyncLockMapConcurrent(t *testing.T) {
+	const numGoroutines = 100
+	const numIterations = 100
+
+	t.Run("Get", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](1*time.Second, 1*time.Nanosecond))
+
+		err := m.Set("key1", "value1")
+		require.NoError(t, err)
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					v, ok := m.Get("key1")
+					require.True(t, ok)
+					require.Equal(t, "value1", v)
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("Set", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+
+		var wg sync.WaitGroup
+		for i := range numGoroutines {
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				for j := range numIterations {
+					key := string(rune('a' + (i+j)%26))
+					err := m.Set(key, "value")
+					require.NoError(t, err)
+				}
+			}(i)
+		}
+		wg.Wait()
+	})
+
+	t.Run("Delete", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+
+		// Populate map
+		for i := range numGoroutines {
+			key := string(rune('a' + i%26))
+			_ = m.Set(key, "value")
+		}
+
+		var wg sync.WaitGroup
+		for i := range numGoroutines {
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				for j := range numIterations {
+					key := string(rune('a' + (i+j)%26))
+					m.Delete(key)
+				}
+			}(i)
+		}
+		wg.Wait()
+	})
+
+	t.Run("Has", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+		_ = m.Set("key1", "value1")
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					_ = m.Has("key1")
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("IsEmpty", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+		_ = m.Set("key1", "value1")
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					_ = m.IsEmpty()
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("GetAll", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+		_ = m.Set("key1", "value1")
+		_ = m.Set("key2", "value2")
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					all := m.GetAll()
+					require.NotNil(t, all)
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("GetKeyWithValue", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+		_ = m.Set("key1", "value1")
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					key, ok := m.GetKeyWithValue("value1")
+					if ok {
+						require.Equal(t, "key1", key)
+					}
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("Clone", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+		_ = m.Set("key1", "value1")
+		_ = m.Set("key2", "value2")
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					cloned := m.Clone()
+					require.NotNil(t, cloned)
+					require.True(t, cloned.Has("key1"))
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("Iterate", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+		_ = m.Set("key1", "value1")
+		_ = m.Set("key2", "value2")
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					count := 0
+					err := m.Iterate(func(k string, v string) error {
+						count++
+						return nil
+					})
+					require.NoError(t, err)
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("Lock", func(t *testing.T) {
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				// Each goroutine gets its own map to avoid interference
+				m := NewSyncLockMap[string, string]()
+				_ = m.Set("key1", "value1")
+
+				for range numIterations {
+					m.Lock()
+					// When locked, Set should fail
+					err := m.Set("test", "test")
+					require.Error(t, err)
+					require.Equal(t, ErrReadOnly, err)
+					m.Unlock()
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("Unlock", func(t *testing.T) {
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				// Each goroutine gets its own map to avoid interference
+				m := NewSyncLockMap[string, string]()
+				_ = m.Set("key1", "value1")
+
+				for range numIterations {
+					m.Lock()
+					wasReadOnly := m.ReadOnly.Load()
+					m.Unlock()
+					require.True(t, wasReadOnly)
+					// When unlocked, Set should succeed
+					err := m.Set("test", "test")
+					require.NoError(t, err)
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("Merge", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+
+		var wg sync.WaitGroup
+		for i := range numGoroutines {
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				for j := range numIterations {
+					key := string(rune('a' + (i+j)%26))
+					err := m.Merge(map[string]string{key: "value"})
+					require.NoError(t, err)
+				}
+			}(i)
+		}
+		wg.Wait()
+	})
+
+	t.Run("Clear", func(t *testing.T) {
+		m := NewSyncLockMap[string, string]()
+
+		var wg sync.WaitGroup
+		for i := range numGoroutines {
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
+				for j := range numIterations {
+					// Add some items
+					key := string(rune('a' + (i+j)%26))
+					_ = m.Set(key, "value")
+					// Clear occasionally
+					if j%10 == 0 {
+						_ = m.Clear()
+					}
+				}
+			}(i)
+		}
+		wg.Wait()
+	})
+
+	t.Run("CleanupInactiveItems", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 1*time.Hour))
+
+		// Populate map
+		for i := range 10 {
+			key := string(rune('a' + i))
+			_ = m.Set(key, "value")
+		}
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					m.CleanupInactiveItems()
+				}
+			}()
+		}
+		wg.Wait()
+	})
+
+	t.Run("ForceCleanup", func(t *testing.T) {
+		m := NewSyncLockMap(WithEviction[string, string](50*time.Millisecond, 1*time.Hour))
+
+		// Populate map
+		for i := range 10 {
+			key := string(rune('a' + i))
+			_ = m.Set(key, "value")
+		}
+
+		var wg sync.WaitGroup
+		for range numGoroutines {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for range numIterations {
+					m.ForceCleanup()
+				}
+			}()
+		}
+		wg.Wait()
+	})
+}

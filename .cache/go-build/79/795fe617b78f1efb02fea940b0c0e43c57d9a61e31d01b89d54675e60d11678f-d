@@ -1,0 +1,11 @@
+./client.go
+./common.go
+./doc.go
+./encodings.go
+./handshake.go
+./initialization.go
+./pixel_format.go
+./security.go
+./server.go
+./vencrypt.go
+./vncclient.go

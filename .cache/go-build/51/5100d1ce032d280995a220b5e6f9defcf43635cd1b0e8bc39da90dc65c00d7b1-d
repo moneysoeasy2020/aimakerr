@@ -1,0 +1,12 @@
+./ancestors.go
+./annotations.go
+./compiled_template.go
+./compiled_template_error.go
+./compiled_template_loader.go
+./doc.go
+./evaluation_ctx.go
+./instructions.go
+./meta.go
+./nodes.go
+./program_ast.go
+./source.go

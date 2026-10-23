@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "username": "example_user",
+    "name": "Example User",
+    "state": "active",
+    "public_email": "longcat@example.com",
+    "web_url": "http://localhost:3000/example_user"
+  }
+]

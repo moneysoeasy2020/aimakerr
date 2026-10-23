@@ -1,0 +1,8 @@
+./basic_auth.go
+./bearer_auth.go
+./cookies_auth.go
+./dynamic.go
+./file.go
+./headers_auth.go
+./query_auth.go
+./strategy.go

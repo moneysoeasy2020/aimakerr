@@ -1,0 +1,9 @@
+./anonymous.go
+./doc.go
+./mechanism.go
+./negotiator.go
+./nonce.go
+./options.go
+./plain.go
+./scram_client.go
+./scram_server.go

@@ -1,0 +1,17 @@
+./annotations.go
+./api.go
+./array.go
+./array_item_match_annotation.go
+./assert_annotation.go
+./compare.go
+./doc.go
+./document.go
+./document_match_annotation.go
+./insert_annotation.go
+./map.go
+./map_item_match_annotation.go
+./match_annotation_expects_kwarg.go
+./match_child_defaults_annotation.go
+./op.go
+./plain_merge.go
+./replace_annotation.go

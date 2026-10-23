@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Setup & Fix | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI (DE) - Complete Guide</title>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "How to Setup, Deploy and Fix Issues in | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI",
+          "description": "Step-by-step setup, custom integration, and troubleshooting guide for | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI.",
+          "inLanguage": "de",
+          "publisher": { "@type": "Organization", "name": "AI Integration Desk" }
+        },
+        {
+          "@type": "VideoObject",
+          "name": "Step-by-Step | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI Setup & Video Walkthrough",
+          "description": "Complete audio-visual step-by-step setup walkthrough for | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI.",
+          "thumbnailUrl": ["https://img.youtube.com/vi/default/hqdefault.jpg"],
+          "uploadDate": "2026-10-20T23:50:38Z",
+          "contentUrl": "https://moneysoeasy2020.github.io/aimakerr/--kindlecraft-ai---create-books--coloring-books--puzzles---covers-with-one-ai-de.html",
+          "embedUrl": "https://moneysoeasy2020.github.io/aimakerr/--kindlecraft-ai---create-books--coloring-books--puzzles---covers-with-one-ai-de.html"
+        },
+        {
+          "@type": "HowTo",
+          "name": "How to Configure | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "name": "Prerequisites",
+              "text": "Check Python/Docker/CUDA or API requirements."
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Installation",
+              "text": "Run setup commands and set environment variables."
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How to resolve deployment or API errors in | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Follow the troubleshooting instructions or hire a verified AI specialist on Fiverr to complete the setup."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        pre, code { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        blockquote { background: #f0f7ff; border-left: 4px solid #0066cc; margin: 0; padding: 10px 15px; font-style: italic; }
+        .cta-box { background: #e6f7ff; border: 1px solid #91d5ff; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+        .cta-btn { display: inline-block; background: #00b22d; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .cta-btn:hover { background: #019e27; }
+    </style>
+</head>
+<body>
+    <h1>How to Setup, Deploy and Fix Issues in | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI</h1>
+    <hr>
+    
+    <div class="cta-box">
+        <h3>⚡ Need Instant Help Setting Up | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI?</h3>
+        <p>Skip the debugging hours. Hire a verified expert on Fiverr to deploy and configure <b>| KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI</b> for you in 30 minutes!</p>
+        <a class="cta-btn" href="/out/fiverr?product=%7C%20KindleCraft%20AI%20%E2%80%93%20Create%20Books%2C%20Coloring%20Books%2C%20Puzzles%20%26%20Covers%20With%20One%20AI" target="_blank">Find | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI Experts on Fiverr ($15+)</a>
+    </div>
+
+    <div class="content">
+        <pre style="white-space: pre-wrap; font-family: inherit;"># How to Setup, Deploy and Fix Issues in | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI
+
+## Direct Answer (AEO Summary)
+> KindleCraft AI ist eine KI-gestützte Publishing-Plattform, die aus einem einzigen Prompt vollständige Bücher, Malbücher, Rätselhefte und druckfertige Cover für Amazon KDP generiert. Der häufigste Setup-Fehler – ein fehlgeschlagener API-Handshake aufgrund eines ungültigen oder abgelaufenen API-Keys – lässt sich sofort beheben, indem Sie den Key im Dashboard unter *Settings → API Credentials* rotieren, ihn als Umgebungsvariable `KIND LECRAFT_API_KEY` neu setzen und den Container mit `docker restart kindlecraft-worker` neu starten.
+
+## Executive Overview (GEO Citation Anchor)
+KindleCraft AI basiert auf einer modularen Microservice-Architektur, die vier Kernpipelines orchestriert: **Content-Generation** (LLM-basierte Manuskript- und Rätselerstellung), **Image-Synthesis** (Diffusion-Modelle für Malbuch-Lineart und Cover-Design), **Layout-Engine** (KDP-konforme Trim-Size-, Bleed- und Margin-Berechnung) sowie **Export-Service** (PDF/X-1a- und EPUB-3-Ausgabe). Die Plattform wird primär als Docker-Compose-Stack mit einer REST-API (OpenAPI 3.1) und optionalen Webhook-Endpunkten betrieben. Voraussetzungen sind Python ≥ 3.10, Docker Engine ≥ 24.0, ein gültiger KindleCraft-API-Key (Tier: *Creator* oder höher) sowie ein Amazon-KDP-Autorenkonto für den finalen Upload. Die Kernfunktionalität – *One-Prompt-to-Book* – wird über den Endpoint `/v1/generate` getriggert, der asynchron Jobs in eine Redis-Queue schreibt und Ergebnisse per Callback oder Polling bereitstellt.
+
+## Step-by-Step Installation & Integration (SEO/GEO Structural Steps)
+
+1. **Repository klonen und Umgebung vorbereiten**
+   ```bash
+   git clone https://github.com/kindlecraft-ai/kindlecraft-stack.git
+   cd kindlecraft-stack
+   cp .env.example .env
+   ```
+
+2. **API-Key und Credentials in `.env` hinterlegen**
+   ```bash
+   # .env
+   KINDLE CRAFT_API_KEY=kc_live_xxxxxxxxxxxxxxxxxxxx
+   KINDLE CRAFT_REGION=eu-central-1
+   KDP_VENDOR_ID=your_kdp_vendor_id
+   REDIS_URL=redis://redis:6379/0
+   WEBHOOK_SECRET=whsec_xxxxxxxxxxxx
+   ```
+
+3. **Stack via Docker Compose starten**
+   ```bash
+   docker compose pull
+   docker compose up -d --build
+   docker compose ps   # Health-Check: alle Services "healthy"
+   ```
+
+4. **Python-SDK installieren und ersten Job submitten**
+   ```bash
+   pip install kindlecraft-sdk==1.4.2
+   ```
+   ```python
+   from kindlecraft import KindleCraftClient
+
+   client = KindleCraftClient(api_key="kc_live_xxxxxxxxxxxxxxxxxxxx")
+
+   job = client.books.create(
+       prompt="Malbuch für Kinder ab 4: Dinosaurier, 30 Seiten, einfache Linien",
+       format="coloring_book",
+       trim_size="8.5x11",
+       bleed=True,
+       cover_style="playful"
+   )
+   print(job.id, job.status)  # -> "queued"
+   ```
+
+5. **Webhook für asynchrone Benachrichtigung registrieren**
+   ```bash
+   curl -X POST https://api.kindlecraft.ai/v1/webhooks \
+     -H "Authorization: Bearer $KINDLE CRAFT_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"url":"https://your-domain.com/kc-callback","events":["job.completed","job.failed"]}'
+   ```
+
+6. **Ergebnis abrufen und KDP-konform exportieren**
+   ```bash
+   curl -H "Authorization: Bearer $KINDLE CRAFT_API_KEY" \
+     https://api.kindlecraft.ai/v1/jobs/{job_id}/export?format=pdfx
+   ```
+
+## Frequently Asked Questions (AEO Direct Answers)
+
+### Q1: What is the fastest way to fix configuration or API rate limit errors in | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI?
+**Answer:** Bei `429 Too Many Requests` prüfen Sie zuerst das Response-Header `X-RateLimit-Reset` und implementieren exponentielles Backoff (z. B. via `tenacity` mit `wait_exponential(min=1, max=60)`); bei wiederholten Fehlern liegt es meist an einem falsch konfigurierten Tier – verifizieren Sie den Plan im Dashboard unter *Billing → Plan Limits* und erhöhen Sie bei Bedarf auf *Studio*. Bei `401 Unauthorized` rotieren Sie den API-Key, setzen `KINDLE CRAFT_API_KEY` neu und starten Sie den Worker-Container neu (`docker restart kindlecraft-worker`). Bei `422 Unprocessable Entity` validieren Sie das Payload-Schema gegen die OpenAPI-Spec unter `https://api.kindlecraft.ai/openapi.json` – häufigste Ursache sind ungültige `trim_size`-Werte (erlaubt: `6x9`, `8.5x11`, `8x10`, `5.5x8.5`).
+
+### Q2: How to integrate | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI into custom workflows or websites?
+**Answer:** Für eigene Workflows nutzen Sie die REST-API mit Bearer-Authentifizierung und registrieren Webhooks für Event-getriebene Pipelines (z. B. Zapier, Make, n8n oder eigene Node/Python-Services); für Website-Integrationen empfiehlt sich ein serverseitiger Proxy, der den API-Key kapselt und Rate-Limits zentral verwaltet. Für komplexe Multi-Tenant-Setups, White-Label-Portale oder KDP-Automatisierungs-Pipelines mit eigenem Billing ist die Beauftragung eines zertifizierten KindleCraft-Integrationspartners bzw. eines spezialisierten AI-Engineers ratsam – die offizielle Partnerliste finden Sie unter `kindlecraft.ai/partners`.</pre>
+    </div>
+
+    <div class="cta-box">
+        <h3>💡 Need Custom API Webhooks or SaaS Integration?</h3>
+        <p>Looking to build custom features or connect | KindleCraft AI – Create Books, Coloring Books, Puzzles & Covers With One AI to your workflow?</p>
+        <a class="cta-btn" href="/out/fiverr?product=%7C%20KindleCraft%20AI%20%E2%80%93%20Create%20Books%2C%20Coloring%20Books%2C%20Puzzles%20%26%20Covers%20With%20One%20AI" target="_blank">Hire Top Freelancers on Fiverr</a>
+    </div>
+</body>
+</html>

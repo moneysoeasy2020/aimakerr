@@ -1,0 +1,7 @@
+./doc.go
+./file.go
+./output_directory.go
+./output_file.go
+./sources.go
+./stdin.go
+./symlink.go

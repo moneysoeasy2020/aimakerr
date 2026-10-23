@@ -1,0 +1,8 @@
+./doc.go
+./file_output_writer.go
+./format_json.go
+./format_screen.go
+./multi_writer.go
+./output.go
+./output_stats.go
+./standard_writer.go

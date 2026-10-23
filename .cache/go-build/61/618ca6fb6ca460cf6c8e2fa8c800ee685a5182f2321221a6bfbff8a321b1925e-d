@@ -1,0 +1,8 @@
+./adapter.go
+./adapter_goexec.go
+./auth.go
+./errors.go
+./options.go
+./redact.go
+./result.go
+./target.go

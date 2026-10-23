@@ -1,0 +1,5 @@
+./auth.go
+./auth_kerberos.go
+./client.go
+./transport.go
+./uuid.go

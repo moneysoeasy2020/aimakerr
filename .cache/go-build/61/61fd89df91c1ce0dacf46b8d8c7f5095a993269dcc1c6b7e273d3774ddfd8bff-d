@@ -1,0 +1,13 @@
+./doc.go
+./header.go
+./helpers.go
+./marsh.go
+./openapi2.go
+./operation.go
+./parameter.go
+./path_item.go
+./ref.go
+./refs.go
+./response.go
+./schema.go
+./security_scheme.go

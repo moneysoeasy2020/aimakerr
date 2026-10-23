@@ -1,0 +1,5 @@
+./action.go
+./misc.go
+./settings.go
+./task.go
+./trigger.go

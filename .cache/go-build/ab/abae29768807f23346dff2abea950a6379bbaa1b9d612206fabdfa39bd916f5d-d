@@ -1,0 +1,14 @@
+./apic.go
+./decode.go
+./emitterc.go
+./encode.go
+./parserc.go
+./readerc.go
+./resolve.go
+./scannerc.go
+./sorter.go
+./strict_scalar_resolve.go
+./writerc.go
+./yaml.go
+./yamlh.go
+./yamlprivateh.go

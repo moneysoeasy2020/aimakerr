@@ -1,0 +1,5 @@
+./catalog.go
+./errors.go
+./find.go
+./known-files.go
+./path.go

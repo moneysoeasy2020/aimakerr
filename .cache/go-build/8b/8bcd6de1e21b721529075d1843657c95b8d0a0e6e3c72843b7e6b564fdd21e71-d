@@ -1,0 +1,8 @@
+./auth.go
+./clean.go
+./client.go
+./context.go
+./exec.go
+./io.go
+./method.go
+./proxy.go
